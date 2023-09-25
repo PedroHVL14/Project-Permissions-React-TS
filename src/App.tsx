@@ -25,8 +25,7 @@ function App() {
             endIcon={<ArrowForward />}
             onClick={() => {
               navigate('/signup');
-            }}
-          >
+            }}>
             Cadastro
           </Button>
         </Box>
@@ -37,8 +36,7 @@ function App() {
             endIcon={<ArrowForward />}
             onClick={() => {
               navigate("/login");
-            }}
-          >
+            }}>
             Login
           </Button>
         </Box>
@@ -48,3 +46,4 @@ function App() {
 }
 
 export default App;
+

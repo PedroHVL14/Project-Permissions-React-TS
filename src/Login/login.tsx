@@ -37,7 +37,7 @@ function Login() {
                 // Save user's email to localStorage
                 localStorage.setItem('loggedInEmail', loginData.email);
                 console.log("E-mail logado:", loginData.email);  // Logging the logged-in email
-                navigate('/userDetails');
+                navigate('/FirstPage');
 
             }
             else {

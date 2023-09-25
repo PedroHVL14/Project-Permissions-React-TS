@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { TextField, Button, Typography, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { validCNPJ } from "./regex/regexCNPJ";
+import { validCNPJ } from "../regex/regexCNPJ";
 
 function Signup() {
     const [step, setStep] = useState(1);

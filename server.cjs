@@ -29,7 +29,7 @@ app.post('/signup/company', async (req, res) => {
     );
     console.log('Resultado da inserção:', result.rows[0].id); // log the inserted company ID
 
-    res.status(201).send({ message: 'Empresa cadastrada com sucesso!' });
+    res.status(201).send({ id: result.rows[0].id, message: 'Empresa cadastrada com sucesso!' });
   } catch (error) {
     console.error('Erro ao cadastrar empresa:', error);
     res.status(500).send({ message: `Erro ao cadastrar empresa: ${error.message}` });
@@ -79,41 +79,3 @@ app.post('/login', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
 });
-
-app.get("/user/details", async (req, res) => {
-    const email = req.query.email;
-    
-    if (!email) {
-      return res.status(400).json({ error: "E-mail é necessário." });
-    }
-  
-    try {
-      const userResult = await pool.query(
-        "SELECT * FROM users WHERE email = $1",
-        [email]
-      );
-  
-      if (userResult.rowCount === 0) {
-        return res.status(404).json({ error: "Usuário não encontrado." });
-      }
-  
-      const user = userResult.rows[0];
-      
-      const companyResult = await pool.query(
-        "SELECT * FROM companies WHERE id = $1",
-        [user.company_id]
-      );
-  
-      if (companyResult.rowCount === 0) {
-        return res.status(404).json({ error: "Empresa não encontrada." });
-      }
-  
-      const company = companyResult.rows[0];
-  
-      res.status(200).json({ user, company });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Erro ao buscar detalhes." });
-    }
-  });
-  
