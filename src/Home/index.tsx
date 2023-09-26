@@ -1,9 +1,8 @@
-import React from 'react';
 import { Button, Container, Typography, Box } from '@mui/material';
 import { ArrowForward } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
-function App() {
+export function Home() {
   const navigate = useNavigate();
 
   return (
@@ -45,5 +44,4 @@ function App() {
   );
 }
 
-export default App;
 
