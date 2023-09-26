@@ -1,10 +1,8 @@
-import { Button, Container, Typography, Box } from '@mui/material';
+import { Container, Typography, Box } from '@mui/material';
 import { ArrowForward } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
+import NavButton from '../components/NavButton';
 
 export function Home() {
-  const navigate = useNavigate();
-
   return (
     <Container component="main" maxWidth="xs">
       <Box
@@ -17,31 +15,9 @@ export function Home() {
         <Typography component="h1" variant="h5">
           Bem-vindo
         </Typography>
-        <Box mt={5}>
-          <Button
-            variant="contained"
-            color="primary"
-            endIcon={<ArrowForward />}
-            onClick={() => {
-              navigate('/signup');
-            }}>
-            Cadastro
-          </Button>
-        </Box>
-        <Box mt={2}>
-          <Button
-            variant="outlined"
-            color="primary"
-            endIcon={<ArrowForward />}
-            onClick={() => {
-              navigate("/login");
-            }}>
-            Login
-          </Button>
-        </Box>
+        <NavButton label="Cadastro" icon={<ArrowForward />} path="/signup" />
+        <NavButton label="Login" icon={<ArrowForward />} path="/login" />
       </Box>
     </Container>
   );
 }
-
-

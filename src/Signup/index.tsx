@@ -1,108 +1,114 @@
-import { TextField, Button, Typography, Box } from "@mui/material";
-import { companyData, handleCompanyChange, handleUserChange, userData } from "./components/handlechange";
-import { errorMessage, handleSubmit, step } from "./components/handleSubmit";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { CompanyProps, UserProps } from './components/SignupTypes';
+import { isCompanyDataValid, isUserDataValid } from './components/handleValidations';
+import { CompanyForm } from './components/screens/company';
+import { Box } from '@mui/material';
+import { UserForm } from './components/screens/users';
 
 export function Signup() {
+    const [step, setStep] = useState(1);
+    const [errorMessage, setErrorMessage] = useState("");
+    const [companyData, setCompanyData] = useState<CompanyProps>({
+        companyName: "",
+        cnpj: "",
+        segment: ""
+    });
+    const [userData, setUserData] = useState<UserProps>({
+        userName: "",
+        email: "",
+        password: "",
+        phone: ""
+    });
+    const [companyId, setCompanyId] = useState<number | null>(null);
+    const navigate = useNavigate();
+
+    const handleCompanyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setCompanyData({
+            ...companyData,
+            [e.target.name]: e.target.value
+        });
+    };
+    const handleUserChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setUserData({
+            ...userData,
+            [e.target.name]: e.target.value
+        });
+    };
+    const handleSubmissionError = () => {
+        alert("Erro ao realizar o cadastro. Tente novamente mais tarde.");
+    }
+    const handleSubmit = async () => {
+        setErrorMessage("");
+
+        if (step === 1) {
+            const companyErrorMsg = isCompanyDataValid(companyData);
+            if (companyErrorMsg) {
+                setErrorMessage(companyErrorMsg);
+                return;
+            }
+            try {
+                const response = await fetch("http://localhost:4000/signup/company", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(companyData)
+                });
+                if (response.status === 201) {
+                    const data = await response.json();
+                    setCompanyId(data.id);
+                    setStep(2);
+                } else {
+                    handleSubmissionError();
+                }
+            } catch (error) {
+                handleSubmissionError();
+            }
+        } else if (step === 2) {
+            const userErrorMsg = isUserDataValid(userData);
+            if (userErrorMsg) {
+                setErrorMessage(userErrorMsg);
+                return;
+            }
+            const completeUserData = {
+                ...userData,
+                company_id: companyId
+            };
+            try {
+                const response = await fetch("http://localhost:4000/signup/user", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(completeUserData)
+                });
+                if (response.status === 201) {
+                    navigate("/login");
+                } else {
+                    handleSubmissionError();
+                }
+            } catch (error) {
+                handleSubmissionError();
+            }
+        }
+    };
     return (
         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
             {step === 1 && (
-                <>
-                    <Typography component="h1" variant="h5">
-                        Cadastro - Empresa
-                    </Typography>
-                    <Box component="form" mt={3} width="100%">
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            label="Nome da empresa"
-                            name="companyName"
-                            value={companyData.companyName}
-                            onChange={handleCompanyChange}
-                        />
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            label="CNPJ"
-                            name="cnpj"
-                            value={companyData.cnpj}
-                            onChange={handleCompanyChange}
-                        />
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            label="Segmento"
-                            name="segment"
-                            value={companyData.segment}
-                            onChange={handleCompanyChange}
-                        />
-                        {errorMessage && <Typography color="error">{errorMessage}</Typography>}
-                        <Button fullWidth variant="contained" color="primary" onClick={handleSubmit}>
-                            Próximo
-                        </Button>
-                    </Box>
-                </>
+                <CompanyForm
+                    companyData={companyData}
+                    handleCompanyChange={handleCompanyChange}
+                    errorMessage={errorMessage}
+                    handleSubmit={handleSubmit}/>
             )}
             {step === 2 && (
-                <>
-                    <Typography component="h1" variant="h5">
-                        Cadastro - Usuário Admin
-                    </Typography>
-                    <Box component="form" mt={3} width="100%">
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            label="Nome do usuário"
-                            name="userName"
-                            value={userData.userName}
-                            onChange={handleUserChange}
-                        />
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            label="Email"
-                            name="email"
-                            value={userData.email}
-                            onChange={handleUserChange}
-                        />
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            type="password"
-                            label="Senha"
-                            name="password"
-                            value={userData.password}
-                            onChange={handleUserChange}
-                        />
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            label="Celular"
-                            name="phone"
-                            value={userData.phone}
-                            onChange={handleUserChange}
-                        />
-                        {errorMessage && <Typography color="error">{errorMessage}</Typography>}
-                        <Button fullWidth variant="contained" color="primary" onClick={handleSubmit}>
-                            Cadastrar
-                        </Button>
-                    </Box>
-                </>
+                <UserForm
+                    userData={userData}
+                    handleUserChange={handleUserChange}
+                    errorMessage={errorMessage}
+                    handleSubmit={handleSubmit}/>
             )}
         </Box>
     );
 }
-
