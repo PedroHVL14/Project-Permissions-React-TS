@@ -1,6 +1,6 @@
 import { Container, Typography, Box } from '@mui/material';
 import { ArrowForward } from '@mui/icons-material';
-import NavButton from '../components/NavButton';
+import { NavButton } from '../../components/NavButton';
 
 export function Home() {
   return (
@@ -16,7 +16,7 @@ export function Home() {
           Bem-vindo
         </Typography>
         <NavButton label="Cadastro" icon={<ArrowForward />} path="/signup" />
-        <NavButton label="Login" icon={<ArrowForward />} path="/login" />
+        <NavButton label="Login" icon={<ArrowForward /> } path="/login" variant="outlined"/>
       </Box>
     </Container>
   );

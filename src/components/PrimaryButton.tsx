@@ -5,7 +5,7 @@ interface PrimaryButtonProps {
     children: React.ReactNode;
 }
 
-export const PrimaryButton: React.FC<PrimaryButtonProps> = ({ onClick, children }) => {
+export function PrimaryButton({ onClick, children }: PrimaryButtonProps) {
     return (
         <Button fullWidth variant="contained" color="primary" onClick={onClick}>
             {children}

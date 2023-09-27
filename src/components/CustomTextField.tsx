@@ -7,7 +7,7 @@ interface CustomTextFieldProps {
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const CustomTextField: React.FC<CustomTextFieldProps> = ({ label, name, value, onChange }) => {
+export function CustomTextField ({ label, name, value, onChange }: CustomTextFieldProps) {
     return (
         <TextField
             variant="outlined"

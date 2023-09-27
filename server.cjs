@@ -38,7 +38,6 @@ app.post('/signup/company', async (req, res) => {
 
 app.post('/signup/user', async (req, res) => {
   const { userName, email, password, phone, company_id } = req.body;
-
   try {
     await pool.query(
       'INSERT INTO users (name, email, password, phone, is_manager, company_id) VALUES ($1, $2, $3, $4, TRUE, $5)',
@@ -51,7 +50,6 @@ app.post('/signup/user', async (req, res) => {
     res.status(500).send({ message: `Erro ao cadastrar usuário: ${error.message}` });
   }
 });
-
 const PORT = 4000;
 
 app.post('/login', async (req, res) => {
