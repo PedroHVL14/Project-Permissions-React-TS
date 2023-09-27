@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Typography } from "@mui/material";
 import { CustomTextField } from "../../../components/CustomTextField";
 import { PrimaryButton } from "../../../components/PrimaryButton";
 import { validCNPJ } from "../../../validations/regexCNPJ";
+import { StyledDiv } from '../styles';
 
 export type CompanyProps = {
     companyName: string;
@@ -31,7 +32,7 @@ export function CompanyForm({
     handleCompanyChange,
     handleSubmit
 }: CompanyFormProps) {
-    const [errorMessage, setErrorMessage] = React.useState("");
+    const [errorMessage, setErrorMessage] = useState("");
 
     const handleFormSubmit = () => {
         const validationMessage = isCompanyDataValid(companyData);
@@ -44,30 +45,32 @@ export function CompanyForm({
 
     return (
         <>
-            <Typography component="h1" variant="h5">
-                Cadastro - Empresa
-            </Typography>
-            {errorMessage && <Typography color="error">{errorMessage}</Typography>}
             <Box component="form" mt={3} width="100%">
-                <CustomTextField
-                    label="Nome da empresa"
-                    name="companyName"
-                    value={companyData.companyName}
-                    onChange={handleCompanyChange} />
-
-                <CustomTextField
-                    label="CNPJ"
-                    name="cnpj"
-                    value={companyData.cnpj}
-                    onChange={handleCompanyChange} />
-
-                <CustomTextField
-                    label="Segmento"
-                    name="segment"
-                    value={companyData.segment}
-                    onChange={handleCompanyChange} />
-
-                <PrimaryButton onClick={handleFormSubmit}>Próximo</PrimaryButton>
+                <StyledDiv>
+                    <CustomTextField
+                        label="Nome da empresa"
+                        name="companyName"
+                        value={companyData.companyName}
+                        onChange={handleCompanyChange} />
+                </StyledDiv>
+                <StyledDiv>
+                    <CustomTextField
+                        label="CNPJ"
+                        name="cnpj"
+                        value={companyData.cnpj}
+                        onChange={handleCompanyChange} />
+                </StyledDiv>
+                <StyledDiv>
+                    <CustomTextField
+                        label="Segmento"
+                        name="segment"
+                        value={companyData.segment}
+                        onChange={handleCompanyChange} />
+                </StyledDiv>
+                <StyledDiv>{errorMessage && <Typography color="error">{errorMessage}</Typography>}</StyledDiv>
+                <StyledDiv>
+                    <PrimaryButton onClick={handleFormSubmit}>Próximo</PrimaryButton>
+                </StyledDiv>
             </Box>
         </>
     );

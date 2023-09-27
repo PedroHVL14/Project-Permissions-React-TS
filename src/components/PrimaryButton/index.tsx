@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { StyledPrimaryButton } from "./styles";
 
 interface PrimaryButtonProps {
     onClick: () => void;
@@ -7,8 +7,8 @@ interface PrimaryButtonProps {
 
 export function PrimaryButton({ onClick, children }: PrimaryButtonProps) {
     return (
-        <Button fullWidth variant="contained" color="primary" onClick={onClick}>
+        <StyledPrimaryButton fullWidth variant="contained" color="primary" onClick={onClick}>
             {children}
-        </Button>
+        </StyledPrimaryButton>
     );
 }

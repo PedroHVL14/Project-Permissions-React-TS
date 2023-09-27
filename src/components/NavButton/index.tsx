@@ -1,6 +1,7 @@
-import { Box, Button } from '@mui/material';
+import { Box } from '@mui/material';
 import { ReactElement } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { StyledNavButton } from './styles';
 
 interface NavButtonProps {
   label: string;
@@ -13,8 +14,8 @@ export function NavButton({ label, icon, path, variant = 'contained' }: NavButto
   const navigate = useNavigate(); 
 
   return (
-    <Box mt={2}>
-      <Button
+    <Box>
+      <StyledNavButton
         variant={variant}
         color="primary"
         endIcon={icon}
@@ -22,7 +23,7 @@ export function NavButton({ label, icon, path, variant = 'contained' }: NavButto
           navigate(path);
         }}>
         {label}
-      </Button>
+      </StyledNavButton>
     </Box>
   );
 };

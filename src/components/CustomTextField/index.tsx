@@ -1,4 +1,4 @@
-import { TextField } from "@mui/material";
+import { StyledTextField } from "./styles";
 
 interface CustomTextFieldProps {
     label: string;
@@ -9,7 +9,7 @@ interface CustomTextFieldProps {
 
 export function CustomTextField ({ label, name, value, onChange }: CustomTextFieldProps) {
     return (
-        <TextField
+        <StyledTextField
             variant="outlined"
             margin="normal"
             required

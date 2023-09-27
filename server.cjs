@@ -64,7 +64,7 @@ app.post('/login', async (req, res) => {
     if (result.rows.length > 0) {
       res.status(200).send({ message: 'Login bem-sucedido!', userDetails: result.rows[0] });
     } else {
-      res.status(401).send({ message: 'E-mail ou senha incorretos.' });
+      res.status(401).send({ message: `E-mail ou senha incorretos.${error.message}` });
     }
   } catch (error) {
     console.error('Erro ao tentar fazer login:', error);

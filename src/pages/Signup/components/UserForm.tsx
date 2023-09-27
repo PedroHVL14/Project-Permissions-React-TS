@@ -3,6 +3,7 @@ import { CustomTextField } from "../../../components/CustomTextField";
 import { PrimaryButton } from "../../../components/PrimaryButton";
 import { isValidEmail } from "../../../validations/isValidEmail";
 import { useState } from "react";
+import { StyledDiv } from "../styles";
 
 export type UserProps = {
     userName: string;
@@ -45,36 +46,39 @@ export function UserForm({
 
     return (
         <>
-            <Typography component="h1" variant="h5">
-                Cadastro - Usuário Admin
-            </Typography>
-            {errorMessage && <Typography color="error">{errorMessage}</Typography>}
             <Box component="form" mt={3} width="100%">
-                <CustomTextField
-                    label="Nome do usuário"
-                    name="userName"
-                    value={userData.userName}
-                    onChange={handleUserChange} />
-
-                <CustomTextField
-                    label="Email"
-                    name="email"
-                    value={userData.email}
-                    onChange={handleUserChange} />
-
-                <CustomTextField
-                    label="Senha"
-                    name="password"
-                    value={userData.password}
-                    onChange={handleUserChange} />
-
-                <CustomTextField
-                    label="Celular"
-                    name="phone"
-                    value={userData.phone}
-                    onChange={handleUserChange} />
-
-                <PrimaryButton onClick={handleFormSubmit}>Cadastrar</PrimaryButton>
+                <StyledDiv>
+                    <CustomTextField
+                        label="Nome do usuário"
+                        name="userName"
+                        value={userData.userName}
+                        onChange={handleUserChange} />
+                </StyledDiv>
+                <StyledDiv>
+                    <CustomTextField
+                        label="Email"
+                        name="email"
+                        value={userData.email}
+                        onChange={handleUserChange} />
+                </StyledDiv>
+                <StyledDiv>
+                    <CustomTextField
+                        label="Senha"
+                        name="password"
+                        value={userData.password}
+                        onChange={handleUserChange} />
+                </StyledDiv>
+                <StyledDiv>
+                    <CustomTextField
+                        label="Celular"
+                        name="phone"
+                        value={userData.phone}
+                        onChange={handleUserChange} />
+                </StyledDiv>
+                <StyledDiv>{errorMessage && <Typography color="error">{errorMessage}</Typography>}</StyledDiv>
+                <StyledDiv>
+                    <PrimaryButton onClick={handleFormSubmit}>Cadastrar</PrimaryButton>
+                </StyledDiv>
             </Box>
         </>
     );

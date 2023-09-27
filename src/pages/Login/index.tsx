@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Typography, Box } from "@mui/material";
+import { Typography} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { CustomTextField } from "../../components/CustomTextField";
 import { PrimaryButton } from "../../components/PrimaryButton";
 import { api } from "../../lib/axios/axios";
-import { Container } from "./styles";
+import { BoxStyled, Container } from "./styles";
+import { StyledDiv } from "../Signup/styles";
 
 export function Login() {
     const navigate = useNavigate();
@@ -28,7 +29,7 @@ export function Login() {
             <Typography component="h1" variant="h5">
                 Login
             </Typography>
-            <Box component="form" mt={3} width="100%">
+            <BoxStyled>
                 <CustomTextField
                     label="Email"
                     name="email"
@@ -41,8 +42,10 @@ export function Login() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)} />
 
-                <PrimaryButton onClick={handleLogin}>Login</PrimaryButton>
-            </Box>
+                <StyledDiv>
+                    <PrimaryButton onClick={handleLogin}>Login</PrimaryButton>
+                </StyledDiv>
+            </BoxStyled>
         </Container>
     );
 }

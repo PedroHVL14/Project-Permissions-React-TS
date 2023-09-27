@@ -6,12 +6,12 @@ interface SignupStepperProps {
 
 export function SignupStepper(props: SignupStepperProps) {
   const { activeStep } = props;
-  const steps = ['Company Signup', 'User Signup'];
+  const steps = ['EMPRESA', 'USUÁRIO'];
 
   return (
     <Stepper activeStep={activeStep} alternativeLabel>
       {steps.map((label) => (
-        <Step key={label}>
+        <Step key={label} disabled={true}>
           <StepLabel>{label}</StepLabel>
         </Step>
       ))}
