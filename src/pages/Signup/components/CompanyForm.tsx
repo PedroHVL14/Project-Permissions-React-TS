@@ -31,7 +31,6 @@ export function CompanyForm({
     handleCompanyChange,
     handleSubmit
 }: CompanyFormProps) {
-    // A state to store the error message
     const [errorMessage, setErrorMessage] = React.useState("");
 
     const handleFormSubmit = () => {
