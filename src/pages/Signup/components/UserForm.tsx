@@ -1,9 +1,11 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
+import { Control, Controller } from 'react-hook-form';
 import { CustomTextField } from "../../../components/CustomTextField";
 import { PrimaryButton } from "../../../components/PrimaryButton";
 import { isValidEmail } from "../../../validations/isValidEmail";
-import { useState } from "react";
 import { StyledDiv } from "../styles";
+import { ErrorMessage } from "../../../components/errorMessage";
+import { SignupProps } from "..";
 
 export type UserProps = {
     userName: string;
@@ -13,71 +15,91 @@ export type UserProps = {
 }
 
 interface UserFormProps {
-    userData: UserProps;
-    handleUserChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     handleSubmit: () => void;
-}
-
-const isUserDataValid = (userData: UserProps): string => {
-    if (!userData.userName || !userData.email || !userData.password || !userData.phone) {
-        return "Todos os campos são obrigatórios!";
-    }
-    if (!isValidEmail(userData.email)) {
-        return "Por favor, insira um e-mail válido.";
-    }
-    return "";
+    control: Control<SignupProps, any>
 }
 
 export function UserForm({
-    userData,
-    handleUserChange,
-    handleSubmit
+    handleSubmit,
+    control
 }: UserFormProps) {
-    const [errorMessage, setErrorMessage] = useState("");
-
-    const handleFormSubmit = () => {
-        const validationMessage = isUserDataValid(userData);
-        if (validationMessage) {
-            setErrorMessage(validationMessage);
-        } else {
-            handleSubmit();
-        }
-    }
 
     return (
         <>
             <Box component="form" mt={3} width="100%">
                 <StyledDiv>
-                    <CustomTextField
-                        label="Nome do usuário"
-                        name="userName"
-                        value={userData.userName}
-                        onChange={handleUserChange} />
+                    <Controller
+                        control={control}
+                        name='user.userName'
+                        rules={{ required: "Nome do usuário é obrigatório" }}
+                        render={({ field: { onChange, value }, fieldState: { error } }) => (
+                            <>
+                                <CustomTextField
+                                    label="Nome do usuário"
+                                    error={!!error?.message}
+                                    onChange={onChange}
+                                    value={value} />
+                                <ErrorMessage message={error?.message} />
+                            </>
+                        )}
+                    />
+                </StyledDiv>
+
+                <StyledDiv>
+                    <Controller
+                        control={control}
+                        name='user.email'
+                        rules={{ required: "Email é obrigatório", validate: value => isValidEmail(value) || "Por favor, insira um e-mail válido." }}
+                        render={({ field: { onChange, value }, fieldState: { error } }) => (
+                            <>
+                                <CustomTextField
+                                    label="Email"
+                                    error={!!error?.message}
+                                    onChange={onChange}
+                                    value={value} />
+                                <ErrorMessage message={error?.message} />
+                            </>
+                        )}
+                    />
+                </StyledDiv>
+
+                <StyledDiv>
+                    <Controller
+                        control={control}
+                        name='user.password'
+                        rules={{ required: "Senha é obrigatória" }}
+                        render={({ field: { onChange, value }, fieldState: { error } }) => (
+                            <>
+                                <CustomTextField
+                                    label="Senha"
+                                    error={!!error?.message}
+                                    onChange={onChange}
+                                    value={value} />
+                                <ErrorMessage message={error?.message} />
+                            </>
+                        )}
+                    />
+                </StyledDiv>
+
+                <StyledDiv>
+                    <Controller
+                        control={control}
+                        name='user.phone'
+                        rules={{ required: "Celular é obrigatório" }}
+                        render={({ field: { onChange, value }, fieldState: { error } }) => (
+                            <>
+                                <CustomTextField
+                                    label="Celular"
+                                    error={!!error?.message}
+                                    onChange={onChange}
+                                    value={value} />
+                                <ErrorMessage message={error?.message} />
+                            </>
+                        )}
+                    />
                 </StyledDiv>
                 <StyledDiv>
-                    <CustomTextField
-                        label="Email"
-                        name="email"
-                        value={userData.email}
-                        onChange={handleUserChange} />
-                </StyledDiv>
-                <StyledDiv>
-                    <CustomTextField
-                        label="Senha"
-                        name="password"
-                        value={userData.password}
-                        onChange={handleUserChange} />
-                </StyledDiv>
-                <StyledDiv>
-                    <CustomTextField
-                        label="Celular"
-                        name="phone"
-                        value={userData.phone}
-                        onChange={handleUserChange} />
-                </StyledDiv>
-                <StyledDiv>{errorMessage && <Typography color="error">{errorMessage}</Typography>}</StyledDiv>
-                <StyledDiv>
-                    <PrimaryButton onClick={handleFormSubmit}>Cadastrar</PrimaryButton>
+                    <PrimaryButton onClick={handleSubmit}>Cadastrar</PrimaryButton>
                 </StyledDiv>
             </Box>
         </>

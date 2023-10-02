@@ -1,51 +1,70 @@
-import { useState } from "react";
-import { Typography} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { CustomTextField } from "../../components/CustomTextField";
 import { PrimaryButton } from "../../components/PrimaryButton";
 import { api } from "../../lib/axios/axios";
 import { BoxStyled, Container } from "./styles";
 import { StyledDiv } from "../Signup/styles";
+import { TitleText } from "../Home/styles";
+import { Controller, useForm, FormProvider } from "react-hook-form";
+import { ErrorMessage } from "../../components/errorMessage";
+
+interface IFormInput {
+    email: string;
+    password: string;
+}
 
 export function Login() {
     const navigate = useNavigate();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
 
-    const handleLogin = async () => {
-        api.post('login', { email, password })
+    const formMethods = useForm<IFormInput>();
+
+    const handleLogin = async (data: IFormInput) => {
+        api.post('login', data)
             .then(() => {
-                localStorage.setItem('loggedInEmail', email);
-                console.log("E-mail logado:", email);
+                localStorage.setItem('loggedInEmail', data.email);
+                console.log("E-mail logado:", data.email);
                 navigate('/App');
-            })
-            .catch(({ response }) => {
-                alert(response.data.message);
             })
     };
 
     return (
-        <Container>
-            <Typography component="h1" variant="h5">
-                Login
-            </Typography>
-            <BoxStyled>
-                <CustomTextField
-                    label="Email"
-                    name="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)} />
-
-                <CustomTextField
-                    label="Senha"
-                    name="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)} />
-
-                <StyledDiv>
-                    <PrimaryButton onClick={handleLogin}>Login</PrimaryButton>
-                </StyledDiv>
-            </BoxStyled>
-        </Container>
+        <FormProvider {...formMethods}>
+            <Container>
+                <TitleText>
+                    Login
+                </TitleText>
+                <BoxStyled>
+                    <Controller
+                        name='email'
+                        rules={{ required: "Email é obrigatório" }}
+                        render={({ field, fieldState: { error } }) => (
+                            <>
+                                <CustomTextField
+                                    {...field}
+                                    label="Email"
+                                    error={!!error} />
+                                <ErrorMessage message={error?.message} />
+                            </>
+                        )}
+                    />
+                    <Controller
+                        name='password'
+                        rules={{ required: "Senha é obrigatória" }}
+                        render={({ field, fieldState: { error } }) => (
+                            <>
+                                <CustomTextField
+                                    {...field}
+                                    label="Senha"
+                                    error={!!error} />
+                                <ErrorMessage message={error?.message} />
+                            </>
+                        )}
+                    />
+                    <StyledDiv>
+                        <PrimaryButton onClick={formMethods.handleSubmit(handleLogin)}>Login</PrimaryButton>
+                    </StyledDiv>
+                </BoxStyled>
+            </Container>
+        </FormProvider>
     );
 }

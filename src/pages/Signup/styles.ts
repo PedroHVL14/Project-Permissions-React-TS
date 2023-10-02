@@ -12,7 +12,3 @@ export const StyledBox = styled(Box)(() => ({
     alignItems: "center",
     marginTop: "10px"
 }));
-
-
-
-
