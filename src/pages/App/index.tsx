@@ -1,7 +1,11 @@
+import { Header } from "./Header";
+import { Sidebar } from "./Sidebar";
+
 export function App() {
   return (
-    <div>
-      BEM VINDO
+    <div style={{ display: 'flex' }}>
+      <Sidebar activeScreen="Dashboard" />
+      <Header activeScreen="Dashboard" />
     </div>
   );
 }

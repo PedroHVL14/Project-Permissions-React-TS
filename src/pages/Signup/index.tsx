@@ -5,8 +5,10 @@ import { CompanyForm, CompanyProps } from './components/CompanyForm';
 import SignupStepper from './components/Stepper';
 import { StyledBox, StyledDiv } from './styles';
 import { StyledSteper } from './components/Stepper/styles';
-import { useForm, FormProvider } from 'react-hook-form'; // Import FormProvider
+import { useForm, FormProvider } from 'react-hook-form';
 import { api } from '../../lib/axios/axios';
+import { ReturnButton } from '../../components/ReturnButton';
+import { Stack } from '@mui/material';
 
 export type SignupProps = {
     company: CompanyProps;
@@ -14,23 +16,15 @@ export type SignupProps = {
 }
 
 export function Signup() {
-    const [step, setStep] = useState(1);  
-    const methods = useForm<SignupProps>(); // Use the useForm hook
+    const [step, setStep] = useState(1);
+    const methods = useForm<SignupProps>();
     const navigate = useNavigate();
 
     function onSave(props: SignupProps) {
-        api.post('/signup/company', props.company)
-            .then(companyResponse => {
-                const companyId = companyResponse.data.id;
-                const userData = {
-                    ...props.user,
-                    company_id: companyId
-                };
-                return api.post('/signup/user', userData);
-            })
-            .then(userResponse => {
-                console.log("User registered successfully:", userResponse.data.message);
-                navigate('/login');
+        api.post('/signup', props)
+            .then(response => {
+                console.log("Company and user registered successfully:", response.data.message);
+                navigate('/');
             })
             .catch(error => {
                 console.error("Error during registration:", error.response?.data?.message || error.message);
@@ -38,27 +32,28 @@ export function Signup() {
     }
 
     return (
-        <FormProvider {...methods}> {/* Use the FormProvider here */}
+        <FormProvider {...methods}>
             <StyledBox>
+                <ReturnButton returnRoute="/" />
                 <StyledDiv>
                     <StyledSteper>
-                        <SignupStepper activeStep={step - 1} />
+                        <SignupStepper activeStep={step - 1} onClick={setStep} />
                     </StyledSteper>
                     <StyledDiv>
-                        {step === 1 && (
+                        <Stack display={step != 1 ? 'none' : undefined}>
                             <CompanyForm
                                 handleSubmit={() => setStep(2)}
                                 control={methods.control}
                             />
-                        )}
+                        </Stack>
                     </StyledDiv>
                     <StyledDiv>
-                        {step === 2 && (
+                        <Stack display={step != 2 ? 'none' : undefined}>
                             <UserForm
                                 handleSubmit={methods.handleSubmit(onSave)}
                                 control={methods.control}
                             />
-                        )}
+                        </Stack>
                     </StyledDiv>
                 </StyledDiv>
             </StyledBox>

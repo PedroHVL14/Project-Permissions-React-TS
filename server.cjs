@@ -18,38 +18,29 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.post('/signup/company', async (req, res) => {
-  const { companyName, cnpj, segment } = req.body;
-  console.log('Dados recebidos:', req.body); 
+app.post('/signup', async (req, res) => {
+  const { company, user } = req.body;
 
   try {
-    const result = await pool.query(
-      'INSERT INTO companies (name, cnpj, segment) VALUES ($1, $2, $3) RETURNING id',
-      [companyName, cnpj, segment]
-    );
-    console.log('Resultado da inserção:', result.rows[0].id);
+      const companyResult = await pool.query(
+          'INSERT INTO companies (name, cnpj, segment) VALUES ($1, $2, $3) RETURNING id',
+          [company.companyName, company.cnpj, company.segment]
+      );
 
-    res.status(201).send({ id: result.rows[0].id, message: 'Empresa cadastrada com sucesso!' });
+      const companyId = companyResult.rows[0].id;
+      await pool.query(
+          'INSERT INTO users (name, email, password, phone, is_manager, company_id) VALUES ($1, $2, $3, $4, TRUE, $5)',
+          [user.userName, user.email, user.password, user.phone, companyId]
+      );
+
+      res.status(201).send({ message: 'Company and user registered successfully!' });
+
   } catch (error) {
-    console.error('Erro ao cadastrar empresa:', error);
-    res.status(500).send({ message: `Erro ao cadastrar empresa: ${error.message}` });
+      console.error('Error during registration:', error);
+      res.status(500).send({ message: `Error during registration: ${error.message}` });
   }
 });
 
-app.post('/signup/user', async (req, res) => {
-  const { userName, email, password, phone, company_id } = req.body;
-  try {
-    await pool.query(
-      'INSERT INTO users (name, email, password, phone, is_manager, company_id) VALUES ($1, $2, $3, $4, TRUE, $5)',
-      [userName, email, password, phone, company_id]
-    );
-
-    res.status(201).send({ message: 'Usuário cadastrado com sucesso!' });
-  } catch (error) {
-    console.error('Erro ao cadastrar usuário:', error);
-    res.status(500).send({ message: `Erro ao cadastrar usuário: ${error.message}` });
-  }
-});
 const PORT = 4000;
 
 app.post('/login', async (req, res) => {

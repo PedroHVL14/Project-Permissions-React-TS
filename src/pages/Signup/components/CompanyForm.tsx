@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import { CustomTextField } from "../../../components/CustomTextField";
 import { PrimaryButton } from "../../../components/PrimaryButton";
-import { StyledDiv } from '../styles';
+import { SpecialStyledDiv, StyledDiv } from '../styles';
 import { Control, Controller, useFormContext } from 'react-hook-form';
 import { ErrorMessage } from "../../../components/errorMessage";
 import { SignupProps } from "..";
@@ -22,18 +22,12 @@ export function CompanyForm({
     handleSubmit,
     control
 }: CompanyFormProps) {
-    const { watch, trigger } = useFormContext<SignupProps>();
-    const companyName = watch('company.companyName');
-    const cnpj = watch('company.cnpj');
-    const segment = watch('company.segment');
-    const allFieldsFilled = companyName && cnpj && segment;
+    const { trigger } = useFormContext<SignupProps>();
 
     const handleButtonClick = async () => {
         const isValid = await trigger(['company.companyName', 'company.cnpj', 'company.segment']);
 
-        if (isValid && allFieldsFilled) {
-            handleSubmit();
-        }
+        isValid && handleSubmit();
     }
 
     return (
@@ -72,7 +66,7 @@ export function CompanyForm({
                             </>
                         )} />
                 </StyledDiv>
-                <StyledDiv>
+                <SpecialStyledDiv>
                     <Controller
                         control={control}
                         name='company.segment'
@@ -87,7 +81,7 @@ export function CompanyForm({
                             </>
                         )}
                     />
-                </StyledDiv>
+                </SpecialStyledDiv>
                 <StyledDiv>
                     <PrimaryButton onClick={handleButtonClick}>Próximo</PrimaryButton>
                 </StyledDiv>
