@@ -53,7 +53,7 @@ app.post('/login', async (req, res) => {
     );
 
     if (result.rows.length > 0) {
-      res.status(200).send({ message: 'Login bem-sucedido!', userDetails: result.rows[0] });
+      res.status(200).send({ message: 'Login bem-sucedido!', userDetails: result.rows[0], userId: result.rows[0].id });
     } else {
       res.status(401).send({ message: `E-mail ou senha incorretos.${error.message}` });
     }
@@ -65,4 +65,44 @@ app.post('/login', async (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
+});
+
+app.get('/user/:id', async (req, res) => {
+  const userId = req.params.id;
+
+  try {
+    const result = await pool.query(
+      'SELECT * FROM users WHERE id = $1',
+      [userId]
+    );
+
+    if (result.rows.length > 0) {
+      res.status(200).send(result.rows[0]);
+    } else {
+      res.status(404).send({ message: 'Usuário não encontrado.' });
+    }
+  } catch (error) {
+    console.error('Erro ao buscar informações do usuário:', error);
+    res.status(500).send({ message: 'Erro ao buscar informações do usuário. Tente novamente mais tarde.' });
+  }
+});
+
+app.get('/company/:id', async (req, res) => {
+  const companyId = req.params.id;
+
+  try {
+    const result = await pool.query(
+      'SELECT * FROM companies WHERE id = $1',
+      [companyId]
+    );
+
+    if (result.rows.length > 0) {
+      res.status(200).send(result.rows[0]);
+    } else {
+      res.status(404).send({ message: 'Empresa não encontrada.' });
+    }
+  } catch (error) {
+    console.error('Erro ao buscar informações da empresa:', error);
+    res.status(500).send({ message: 'Erro ao buscar informações da empresa. Tente novamente mais tarde.' });
+  }
 });

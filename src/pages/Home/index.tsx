@@ -23,12 +23,13 @@ export function Home() {
 
   const handleLogin = async (data: IFormInput) => {
     api.post('login', data)
-      .then(() => {
-        localStorage.setItem('loggedInEmail', data.email);
-        console.log("E-mail logado:", data.email);
+      .then((response) => {
+        const userId = response.data.userId;
+        localStorage.setItem('loggedInUserId', userId.toString());
+        console.log("Id logado:", userId);
         navigate('/App');
       });
-  };
+  };  
 
   return (
     <ThemeProvider theme={theme}>
