@@ -5,13 +5,18 @@ import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 
 type ReturnButtonProps = {
     returnRoute: string;
+    color?: string;
 };
 
-export const ReturnButton: React.FC<ReturnButtonProps> = ({ returnRoute }) => {
+export const ReturnButton: React.FC<ReturnButtonProps> = ({ returnRoute, color}) => {
     const navigate = useNavigate();
 
     return (
-        <ReturnButtonStyled variant="contained" color="primary" onClick={() => navigate(returnRoute)}>
+        <ReturnButtonStyled 
+            variant="contained"
+            style={{ backgroundColor: color }}
+            onClick={() => navigate(returnRoute)}
+        >
             <KeyboardReturnIcon />
         </ReturnButtonStyled>
     );

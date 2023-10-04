@@ -1,4 +1,12 @@
-import { Step, StepLabel, Stepper } from '@mui/material';
+import { Step, StepLabel, Stepper, ThemeProvider, createTheme } from '@mui/material';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#41b441',
+    },
+  },
+});
 
 interface SignupStepperProps {
   activeStep: number;
@@ -10,13 +18,15 @@ export function SignupStepper(props: SignupStepperProps) {
   const steps = ['EMPRESA', 'USUÁRIO'];
 
   return (
-    <Stepper activeStep={activeStep} alternativeLabel>
-      {steps.map((label, index) => (
-        <Step key={label} disabled={true} onClick={() => onClick(index + 1)}>
-          <StepLabel>{label}</StepLabel>
-        </Step>
-      ))}
-    </Stepper>
+    <ThemeProvider theme={theme}>
+      <Stepper activeStep={activeStep} alternativeLabel>
+        {steps.map((label, index) => (
+          <Step key={label} disabled={true} onClick={() => onClick(index + 1)}>
+            <StepLabel>{label}</StepLabel>
+          </Step>
+        ))}
+      </Stepper>
+    </ThemeProvider>
   );
 }
 

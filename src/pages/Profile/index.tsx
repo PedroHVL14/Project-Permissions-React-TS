@@ -1,13 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { Header } from '../App/Header';
-import { ReturnButton } from '../../components/ReturnButton';
-import { StyledDiv } from '../Signup/styles';
 import { api } from '../../lib/axios/axios';
+import { StyledDiv } from '../Signup/styles';
+import { FormProvider, useForm } from 'react-hook-form';
+import { ProfileUpdateSection } from './components/NameSection';
+import { ProfileInformation } from './components/ProfileInformation';
+import { ProfileSidebar } from './components/ProfileSidebar';
 
 export const Profile: React.FC = () => {
+    const methods = useForm();
     const [userInfo, setUserInfo] = useState<any>(null);
     const [companyInfo, setCompanyInfo] = useState<any>(null);
-
+    const [activeSection, setActiveSection] = useState<string>('');
+    const { control, handleSubmit } = useForm();
+    const toggleSection = (section: string) => {
+        if (activeSection === section) {
+            setActiveSection('');
+        } else {
+            setActiveSection(section);
+        }
+    };
     useEffect(() => {
         const userId = localStorage.getItem('loggedInUserId');
         if (userId) {
@@ -29,34 +41,18 @@ export const Profile: React.FC = () => {
                 .catch(error => console.error("Erro ao buscar informações:", error));
         }
     }, []);
-
+    
     return (
-        <StyledDiv>
-            <Header activeScreen="Perfil" fullWidth />
-            <div style={{ alignSelf: 'flex-start', marginTop: '10px' }}>
-                <ReturnButton returnRoute={'/App'} />
-            </div>
-            <div>
-                {userInfo && (
-                    <div>
-                        <h3>Informações do Perfil:</h3>
-                        <p>Nome: {userInfo.name}</p>
-                        <p>Email: {userInfo.email}</p>
-                        <p>Telefone: {userInfo.phone}</p>
-                        <p>É gerente? {userInfo.is_manager ? "Sim" : "Não"}</p>
-                        <p>Criado em: {new Date(userInfo.created_at).toLocaleDateString()}</p>
-                        <p>Atualizado em: {new Date(userInfo.updated_at).toLocaleDateString()}</p>
-                    </div>
-                )}
-                {companyInfo && (
-                    <div>
-                        <h3>Informações da Empresa:</h3>
-                        <p>Nome da empresa: {companyInfo.name}</p>
-                        <p>CNPJ: {companyInfo.cnpj}</p>
-                        <p>Segmento: {companyInfo.segment}</p>
-                    </div>
-                )}
-            </div>
-        </StyledDiv>
+        <FormProvider {...methods}>
+            <StyledDiv>
+                <Header activeScreen="Perfil" fullWidth returnbutton={true} returnRoute="/App" returnButtonColor="#41b441" />
+
+                <ProfileUpdateSection control={control} activeSection={activeSection} setActiveSection={setActiveSection} handleSubmit={handleSubmit} />
+
+                <ProfileSidebar toggleSection={toggleSection} />
+
+                <ProfileInformation userInfo={userInfo} companyInfo={companyInfo} activeSection={activeSection} />
+            </StyledDiv>
+        </FormProvider>
     );
 }

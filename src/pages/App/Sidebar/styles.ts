@@ -1,14 +1,17 @@
 import { Button, styled } from "@mui/material";
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 
-export const SidebarContainer = styled('div')({
+export const SidebarContainer = styled('div')(({ theme }) => ({
     backgroundColor: 'white',
     width: '280px',
     height: '100vh',
     padding: '20px',
     margin: 0,
-    borderRight: '1px solid #e0e0e0', 
-});
+    borderRight: '1px solid #e0e0e0',
+    [theme.breakpoints.down('sm')]: {
+        display: 'none',
+    },
+}));
 
 export const LogoImage = styled('img')({
     width: '100%',

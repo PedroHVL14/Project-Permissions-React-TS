@@ -1,4 +1,4 @@
-import { Box, Container, Typography, styled } from "@mui/material";
+import { Box, Container, styled } from "@mui/material";
 
 export const ContainerStyled = styled(Container)(() => ({
     display: "flex",
@@ -17,7 +17,10 @@ export const BoxStyled = styled(Box)(() => ({
     backgroundColor: "white",
     padding: "20px",
     boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
-    borderRadius: '10px'
+    borderRadius: '10px',
+    '@media (max-width: 600px)': {
+        width: "90%"
+    }
 }));
 
 export const DividerStyled = styled(Box)(() => ({
@@ -34,17 +37,13 @@ export const TextContainer = styled(Box)(() => ({
     flexDirection: "column",
     alignItems: "end",
     justifyContent: "center",
-    width: "40%"
+    width: "40%",
+    '@media (max-width: 600px)': {
+        display: "none"
+    }
 }));
 
-export const BigText = styled(Typography)(() => ({
-    fontSize: "40px",
-    fontWeight: "bold",
-    textAlign: "end"
-}));
-
-export const SmallText = styled(Typography)(() => ({
-    fontSize: "20px",
-    textAlign: "center",
-    marginTop: '-5px'
+export const ImageStyled = styled('img')(() => ({
+    maxWidth: "80%",
+    height: "auto",
 }));

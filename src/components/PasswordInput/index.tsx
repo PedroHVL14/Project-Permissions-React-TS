@@ -1,8 +1,8 @@
 import React, { useState, MouseEvent } from 'react';
 import { Controller, Control } from 'react-hook-form';
-import { FormControl, InputLabel, InputAdornment, IconButton } from '@mui/material';
+import { FormControl, InputAdornment, IconButton } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { StyledOutlinedInput } from './styles';
+import { StyledTextField } from '../CustomTextField/styles';
 
 interface IFormInput {
     email: string;
@@ -17,7 +17,6 @@ interface PasswordInputProps {
 
 export const PasswordInput: React.FC<PasswordInputProps> = ({ control, name, rules }) => {
     const [showPassword, setShowPassword] = useState(false);
-    const [isFocused, setIsFocused] = useState(false);
 
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
@@ -33,33 +32,30 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({ control, name, rul
             control={control}
             rules={rules}
             render={({ field, fieldState: { error } }) => (
-                <FormControl variant="outlined">
-                    <InputLabel 
-                        htmlFor="outlined-adornment-password"
-                        shrink={isFocused || field.value ? true : false}
-                    >
-                        Senha
-                    </InputLabel>
-                    <StyledOutlinedInput
+                <FormControl variant="outlined" fullWidth>
+                    <StyledTextField
                         {...field}
-                        onFocus={() => setIsFocused(true)}
-                        onBlur={() => setIsFocused(false)}
                         id="outlined-adornment-password"
                         type={showPassword ? 'text' : 'password'}
                         error={!!error}
-                        endAdornment={
-                            <InputAdornment position="end">
-                                <IconButton
-                                    aria-label="toggle password visibility"
-                                    onClick={handleClickShowPassword}
-                                    onMouseDown={handleMouseDownPassword}
-                                    edge="start"
-                                >
-                                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                                </IconButton>
-                            </InputAdornment>
-                        }
+                        fullWidth
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={handleClickShowPassword}
+                                        onMouseDown={handleMouseDownPassword}
+                                        edge="end"
+                                    >
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            )
+                        }}
+                        label="Senha"
                     />
+
                 </FormControl>
             )}
         />

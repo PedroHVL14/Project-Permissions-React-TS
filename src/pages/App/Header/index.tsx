@@ -9,18 +9,31 @@ import {
     RightContainer,
     StyledAvatarButton,
 } from './styles';
+import { ReturnButton } from '../../../components/ReturnButton';
+import { StyledDivText } from '../../Profile/styles';
 
-interface HeaderProps {
+type HeaderProps = {
     activeScreen: string;
+    returnbutton: boolean;
+    returnRoute?: string; 
     fullWidth?: boolean;
-}
+    returnButtonColor?: string;
+};
 
-export const Header: React.FC<HeaderProps> = ({ activeScreen, fullWidth }) => {
+export const Header: React.FC<HeaderProps> = ({ 
+    activeScreen, 
+    returnbutton, 
+    returnRoute,
+    returnButtonColor,
+    fullWidth
+ }) => {
   const navigate = useNavigate();
 
   return (
     <HeaderContainer fullWidth={fullWidth}>
-        <ScreenName>{activeScreen}</ScreenName>
+        {returnbutton && returnRoute && 
+        <ReturnButton returnRoute={returnRoute} color={returnButtonColor} />}
+        <ScreenName><StyledDivText>{activeScreen}</StyledDivText></ScreenName>
         <RightContainer>
             <IconButton>
                 <NotificationsIcon />

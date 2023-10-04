@@ -1,7 +1,7 @@
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { ArrowForward } from '@mui/icons-material';
 import { NavButton } from '../../components/NavButton';
-import { BigText, BoxStyled, ContainerStyled, DividerStyled, SmallText, TextContainer } from './styles';
+import { BoxStyled, ContainerStyled, DividerStyled, ImageStyled, TextContainer } from './styles';
 import { Controller, useForm, FormProvider } from 'react-hook-form';
 import { ErrorMessage } from '../../components/errorMessage';
 import { api } from '../../lib/axios/axios';
@@ -29,7 +29,7 @@ export function Home() {
         console.log("Id logado:", userId);
         navigate('/App');
       });
-  };  
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -51,11 +51,11 @@ export function Home() {
               )}
             />
             <StyledDiv>
-            <PasswordInput 
+              <PasswordInput
                 control={formMethods.control}
                 name="password"
                 rules={{ required: "Senha é obrigatória" }}
-            />
+              />
             </StyledDiv>
             <ErrorMessage message={formMethods.formState.errors.password?.message} />
             <PrimaryButton onClick={formMethods.handleSubmit(handleLogin)}>Login</PrimaryButton>
@@ -64,12 +64,7 @@ export function Home() {
           </FormProvider>
         </BoxStyled>
         <TextContainer>
-            <BigText>
-              Gerenciador de Funcionários
-            </BigText>
-            <SmallText>
-              plug4sales
-            </SmallText>
+          <ImageStyled src="https://i.ibb.co/h87QwkF/image-removebg-preview.png" alt="Imagem do Gerenciador de Funcionários" />
         </TextContainer>
       </ContainerStyled>
     </ThemeProvider>

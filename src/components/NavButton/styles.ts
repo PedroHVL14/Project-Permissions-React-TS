@@ -1,15 +1,14 @@
 import { Button, createTheme, styled } from "@mui/material";
 
 export const StyledNavButton = styled(Button)(() => ({
-  marginTop: '10px',
   width: '150px',
   height: '40px',
-  display: 'flex',
-  justifyContent: "space-between",
-  backgroundColor: '#32CD32',
+  marginTop: "15px",
+  backgroundColor: '#41b441',
+  color: '#ffffff',
   '&:hover': {
-    backgroundColor: '#45a049',
-  }
+    backgroundColor: '#32CD32',
+  },
 }));
 
 export const theme = createTheme({

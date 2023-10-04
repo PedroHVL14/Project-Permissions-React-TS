@@ -106,3 +106,45 @@ app.get('/company/:id', async (req, res) => {
     res.status(500).send({ message: 'Erro ao buscar informações da empresa. Tente novamente mais tarde.' });
   }
 });
+
+app.put('/user/update/:id', async (req, res) => {
+  const userId = req.params.id;
+  const { name, phone, password } = req.body;
+
+  let setSegments = [];
+  let values = [userId];
+
+  if (name !== undefined) {
+      setSegments.push(`name = $${values.length + 1}`);
+      values.push(name);
+  }
+
+  if (phone !== undefined) {
+      setSegments.push(`phone = $${values.length + 1}`);
+      values.push(phone);
+  }
+
+  if (password !== undefined) {
+      setSegments.push(`password = $${values.length + 1}`);
+      values.push(password);
+  }
+
+  if (!setSegments.length) {
+      return res.status(400).send({ message: 'No fields provided for update.' });
+  }
+
+  let queryString = `UPDATE users SET ${setSegments.join(", ")} WHERE id = $1 RETURNING *`;
+
+  try {
+      const result = await pool.query(queryString, values);
+
+      if (result.rows.length > 0) {
+          res.status(200).send(result.rows[0]);
+      } else {
+          res.status(404).send({ message: 'Usuário não encontrado.' });
+      }
+  } catch (error) {
+      console.error('Erro ao atualizar informações do usuário:', error);
+      res.status(500).send({ message: 'Erro ao atualizar informações do usuário. Tente novamente mais tarde.' });
+  }
+});

@@ -4,7 +4,6 @@ import { UserForm, UserProps } from './components/UserForm';
 import { CompanyForm, CompanyProps } from './components/CompanyForm';
 import SignupStepper from './components/Stepper';
 import { StyledBox, StyledDiv } from './styles';
-import { StyledSteper } from './components/Stepper/styles';
 import { useForm, FormProvider } from 'react-hook-form';
 import { api } from '../../lib/axios/axios';
 import { ReturnButton } from '../../components/ReturnButton';
@@ -34,11 +33,11 @@ export function Signup() {
     return (
         <FormProvider {...methods}>
             <StyledBox>
-                <ReturnButton returnRoute="/" />
+                <div style={{ alignSelf: 'flex-start', marginTop: '10px' }}>
+                    <ReturnButton returnRoute={'/'} />
+                </div>
                 <StyledDiv>
-                    <StyledSteper>
-                        <SignupStepper activeStep={step - 1} onClick={setStep} />
-                    </StyledSteper>
+                    <SignupStepper activeStep={step - 1} onClick={setStep} />
                     <StyledDiv>
                         <Stack display={step != 1 ? 'none' : undefined}>
                             <CompanyForm
