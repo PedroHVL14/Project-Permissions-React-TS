@@ -35,3 +35,10 @@ export const StyledAvatarButton = styled(IconButton)({
         fontSize: '32px',
     }
 });
+
+export const LeftContainer = styled('div')({
+    display: 'flex',
+    alignItems: 'center',
+    gap: '20px',
+});
+

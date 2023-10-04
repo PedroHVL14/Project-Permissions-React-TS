@@ -3,7 +3,7 @@ import { Header } from '../App/Header';
 import { api } from '../../lib/axios/axios';
 import { StyledDiv } from '../Signup/styles';
 import { FormProvider, useForm } from 'react-hook-form';
-import { ProfileUpdateSection } from './components/NameSection';
+import { ProfileUpdateSection } from './components/Section';
 import { ProfileInformation } from './components/ProfileInformation';
 import { ProfileSidebar } from './components/ProfileSidebar';
 

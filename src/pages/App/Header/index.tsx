@@ -8,6 +8,7 @@ import {
     ScreenName,
     RightContainer,
     StyledAvatarButton,
+    LeftContainer,
 } from './styles';
 import { ReturnButton } from '../../../components/ReturnButton';
 import { StyledDivText } from '../../Profile/styles';
@@ -15,33 +16,37 @@ import { StyledDivText } from '../../Profile/styles';
 type HeaderProps = {
     activeScreen: string;
     returnbutton: boolean;
-    returnRoute?: string; 
+    returnRoute?: string;
     fullWidth?: boolean;
     returnButtonColor?: string;
 };
 
-export const Header: React.FC<HeaderProps> = ({ 
-    activeScreen, 
-    returnbutton, 
+export const Header: React.FC<HeaderProps> = ({
+    activeScreen,
+    returnbutton,
     returnRoute,
     returnButtonColor,
     fullWidth
- }) => {
-  const navigate = useNavigate();
+}) => {
+    const navigate = useNavigate();
 
-  return (
-    <HeaderContainer fullWidth={fullWidth}>
-        {returnbutton && returnRoute && 
-        <ReturnButton returnRoute={returnRoute} color={returnButtonColor} />}
-        <ScreenName><StyledDivText>{activeScreen}</StyledDivText></ScreenName>
-        <RightContainer>
-            <IconButton>
-                <NotificationsIcon />
-            </IconButton>
-            <StyledAvatarButton onClick={() => navigate('/profile')}>
-                <AccountCircleIcon />
-            </StyledAvatarButton>
-        </RightContainer>
-    </HeaderContainer>
-  );
+    return (
+        <HeaderContainer fullWidth={fullWidth}>
+            <>
+                <LeftContainer>
+                    {returnbutton && returnRoute &&
+                        <ReturnButton returnRoute={returnRoute} color={returnButtonColor} />}
+                    <ScreenName><StyledDivText>{activeScreen}</StyledDivText></ScreenName>
+                </LeftContainer>
+                <RightContainer>
+                    <IconButton>
+                        <NotificationsIcon />
+                    </IconButton>
+                    <StyledAvatarButton onClick={() => navigate('/profile')}>
+                        <AccountCircleIcon />
+                    </StyledAvatarButton>
+                </RightContainer>
+            </>
+        </HeaderContainer>
+    );
 }

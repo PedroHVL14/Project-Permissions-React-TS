@@ -108,43 +108,56 @@ app.get('/company/:id', async (req, res) => {
 });
 
 app.put('/user/update/:id', async (req, res) => {
-  const userId = req.params.id;
-  const { name, phone, password } = req.body;
+    const userId = req.params.id;
+    const { name, phone, password } = req.body;
 
-  let setSegments = [];
-  let values = [userId];
+    try {
+        let queryString = 'UPDATE users SET updated_at = NOW()';
+        const values = [];
 
-  if (name !== undefined) {
-      setSegments.push(`name = $${values.length + 1}`);
-      values.push(name);
-  }
+        if (name) {
+            queryString += ', name = $2';
+            values.push(name);
+        }
 
-  if (phone !== undefined) {
-      setSegments.push(`phone = $${values.length + 1}`);
-      values.push(phone);
-  }
+        if (phone) {
+            queryString += ', phone = $3';
+            values.push(phone);
+        }
 
-  if (password !== undefined) {
-      setSegments.push(`password = $${values.length + 1}`);
-      values.push(password);
-  }
+        if (password) {
+            queryString += ', password = $4';
+            values.push(password);
+        }
 
-  if (!setSegments.length) {
-      return res.status(400).send({ message: 'No fields provided for update.' });
-  }
+        queryString += ' WHERE id = $1 RETURNING *';
+        values.unshift(userId);
 
-  let queryString = `UPDATE users SET ${setSegments.join(", ")} WHERE id = $1 RETURNING *`;
+        const result = await pool.query(queryString, values);
+
+        if (result.rows.length > 0) {
+            res.status(200).send(result.rows[0]);
+        } else {
+            res.status(404).send({ message: 'Usuário não encontrado.' });
+        }
+    } catch (error) {
+        console.error('Erro ao atualizar informações do usuário:', error);
+        res.status(500).send({ message: 'Erro ao atualizar informações do usuário. Tente novamente mais tarde.' });
+    }
+});
+
+app.post('/login-history', async (req, res) => {
+  const { user_id } = req.body;
 
   try {
-      const result = await pool.query(queryString, values);
+    const result = await pool.query(
+      'INSERT INTO login_history (user_id) VALUES ($1) RETURNING id',
+      [user_id]
+    );
 
-      if (result.rows.length > 0) {
-          res.status(200).send(result.rows[0]);
-      } else {
-          res.status(404).send({ message: 'Usuário não encontrado.' });
-      }
+    res.status(201).send({ message: 'Horário de login registrado com sucesso!' });
   } catch (error) {
-      console.error('Erro ao atualizar informações do usuário:', error);
-      res.status(500).send({ message: 'Erro ao atualizar informações do usuário. Tente novamente mais tarde.' });
+    console.error('Erro ao registrar horário de login:', error);
+    res.status(500).send({ message: 'Erro ao registrar horário de login. Tente novamente mais tarde.' });
   }
 });

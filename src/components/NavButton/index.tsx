@@ -10,11 +10,11 @@ interface NavButtonProps {
   variant?: 'contained' | 'outlined';
 }
 
-export function NavButton({ label, icon, path, variant = 'contained' }: NavButtonProps){ 
+export function NavButton({ label, icon, path, variant = 'contained', className }: NavButtonProps & { className?: string }) { 
   const navigate = useNavigate(); 
 
   return (
-    <Box>
+    <Box className={className}>
       <StyledNavButton
         variant={variant}
         color="primary"

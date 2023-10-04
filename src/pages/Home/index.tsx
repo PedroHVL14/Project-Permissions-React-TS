@@ -27,9 +27,19 @@ export function Home() {
         const userId = response.data.userId;
         localStorage.setItem('loggedInUserId', userId.toString());
         console.log("Id logado:", userId);
+
+        api.post('login-history', { user_id: userId })
+          .then(() => {
+            console.log("Registro de login inserido no histórico.");
+          })
+          .catch((error) => {
+            console.error("Erro ao inserir registro de login no histórico:", error);
+          });
+  
         navigate('/App');
       });
   };
+  
 
   return (
     <ThemeProvider theme={theme}>

@@ -2,6 +2,7 @@ import styled from '@mui/styled-engine';
 import Button from '@mui/material/Button';
 import { StyledButton } from '../App/Sidebar/styles';
 import { theme } from '../../components/NavButton/styles';
+import { NavButton } from '../../components/NavButton';
 
 export const globalFontStyle = {
     fontFamily: "'Open Sans', sans-serif"
@@ -13,7 +14,7 @@ export const Sidebar = styled('div')({
     flexDirection: 'column',
     gap: '10px',
     width: '280px',
-    height: '90vh',
+    height: '80vh',
     position: 'absolute',
     top: '80px',
     left: '10px',
@@ -35,7 +36,8 @@ export const SidebarButton = styled(Button)({
     height: '45px',
     '&:hover': {
         backgroundColor: '#EBF3E7',
-        color: '#41b441',}
+        color: '#41b441',
+    }
 });
 
 export const ProfileStyledButton = styled(StyledButton)({
@@ -48,7 +50,11 @@ export const StyledDivText = styled('div')({
 
 export const SidebarIcon = styled('span')({
     marginRight: '8px',
-    display: 'inline-flex', 
-    alignItems: 'center', 
+    display: 'inline-flex',
+    alignItems: 'center',
 });
 
+
+export const NavButtonStyled = styled(NavButton)({
+    marginTop: '20px'
+});
