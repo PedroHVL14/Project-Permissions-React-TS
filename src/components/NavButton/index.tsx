@@ -10,20 +10,23 @@ interface NavButtonProps {
   variant?: 'contained' | 'outlined';
 }
 
-export function NavButton({ label, icon, path, variant = 'contained', className }: NavButtonProps & { className?: string }) { 
+export function NavButton({ label, icon, path, variant = 'contained', className, onClick }: NavButtonProps & { className?: string, onClick?: () => void }) { 
   const navigate = useNavigate(); 
 
+  const handleClick = () => {
+      if (onClick) onClick();
+      navigate(path);
+  };
+
   return (
-    <Box className={className}>
-      <StyledNavButton
-        variant={variant}
-        color="primary"
-        endIcon={icon}
-        onClick={() => {
-          navigate(path);
-        }}>
-        {label}
-      </StyledNavButton>
-    </Box>
+      <Box className={className}>
+          <StyledNavButton
+              variant={variant}
+              color="primary"
+              endIcon={icon}
+              onClick={handleClick}>
+              {label}
+          </StyledNavButton>
+      </Box>
   );
 };

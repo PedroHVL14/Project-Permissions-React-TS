@@ -1,51 +1,45 @@
 import React from 'react';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { IconButton } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 import {
     HeaderContainer,
     ScreenName,
     RightContainer,
-    StyledAvatarButton,
     LeftContainer,
 } from './styles';
-import { ReturnButton } from '../../../components/ReturnButton';
 import { StyledDivText } from '../../Profile/styles';
+import { useAuth } from '../../../validations/authContext';
+import AccountPopover from '../../../components/AccountPopover';
 
 type HeaderProps = {
     activeScreen: string;
-    returnbutton: boolean;
-    returnRoute?: string;
     fullWidth?: boolean;
-    returnButtonColor?: string;
 };
 
 export const Header: React.FC<HeaderProps> = ({
     activeScreen,
-    returnbutton,
-    returnRoute,
-    returnButtonColor,
     fullWidth
 }) => {
-    const navigate = useNavigate();
+    const { user, logout } = useAuth();
+    const handleLogout = () => {
+        logout();
+    };
 
     return (
         <HeaderContainer fullWidth={fullWidth}>
             <>
                 <LeftContainer>
-                    {returnbutton && returnRoute &&
-                        <ReturnButton returnRoute={returnRoute} color={returnButtonColor} />}
-                    <ScreenName><StyledDivText>{activeScreen}</StyledDivText></ScreenName>
+                    <ScreenName>
+                        <StyledDivText>{activeScreen}</StyledDivText>
+                    </ScreenName>
                 </LeftContainer>
                 <RightContainer>
                     <IconButton>
                         <NotificationsIcon />
                     </IconButton>
-                    <StyledAvatarButton onClick={() => navigate('/profile')}>
-                        <AccountCircleIcon />
-                    </StyledAvatarButton>
+                    {user && <AccountPopover userInfo={user} onLogout={handleLogout} />}
                 </RightContainer>
+
             </>
         </HeaderContainer>
     );

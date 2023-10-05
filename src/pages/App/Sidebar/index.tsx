@@ -18,10 +18,12 @@ import {
 import { ThemeProvider } from '@emotion/react';
 import { theme } from '../../../components/NavButton/styles';
 import { CssBaseline } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 export const Sidebar: React.FC<{ activeScreen: string }> = ({ activeScreen }) => {
+  const navigate = useNavigate();
   const menuItems = [
-    { label: "Dashboard", icon: <DashboardIcon /> },
+    { label: "Dashboard", icon: <DashboardIcon />, path: "/" },
     { label: "Clientes", icon: <EmojiPeopleIcon />, hasArrow: true },
     { label: "Produtos", icon: <ShoppingBasketIcon />, hasArrow: true },
     { label: "Vendas", icon: <BarChartIcon /> },
@@ -30,7 +32,9 @@ export const Sidebar: React.FC<{ activeScreen: string }> = ({ activeScreen }) =>
     { label: "Integrações", icon: <ExtensionIcon /> },
     { label: "Ajustes", icon: <SettingsIcon /> },
   ];
-
+  const handleNavigation = (path: string) => {
+    navigate(path);
+  };
   return (
     <SidebarContainer>
       <ThemeProvider theme={theme}>
@@ -42,7 +46,8 @@ export const Sidebar: React.FC<{ activeScreen: string }> = ({ activeScreen }) =>
               <StyledButton 
                 startIcon={<IconWrapper>{item.icon}</IconWrapper>} 
                 endIcon={item.hasArrow ? <StyledArrowIcon /> : null}
-                style={item.label === activeScreen ? { backgroundColor: '#EBF3E7', color: '#41b441' } : {}}>
+                style={item.label === activeScreen ? { backgroundColor: '#EBF3E7', color: '#41b441' } : {}}
+                onClick={() => item.path && handleNavigation(item.path)}>
                 {item.label}
               </StyledButton>
             </MenuItem>

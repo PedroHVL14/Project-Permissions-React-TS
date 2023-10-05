@@ -11,6 +11,7 @@ import { PrimaryButton } from '../../components/PrimaryButton';
 import { theme } from '../../components/NavButton/styles';
 import { StyledDiv } from '../Signup/styles';
 import { PasswordInput } from '../../components/PasswordInput';
+import { useAuth } from '../../validations/authContext';
 
 interface IFormInput {
   email: string;
@@ -20,10 +21,11 @@ interface IFormInput {
 export function Home() {
   const navigate = useNavigate();
   const formMethods = useForm<IFormInput>();
-
+  const { login } = useAuth();
   const handleLogin = async (data: IFormInput) => {
-    api.post('login', data)
-      .then((response) => {
+    api.post('login', data).then((response) => {
+      const userDetails = response.data.userDetails;
+      login(userDetails);
         const userId = response.data.userId;
         localStorage.setItem('loggedInUserId', userId.toString());
         console.log("Id logado:", userId);
@@ -36,11 +38,10 @@ export function Home() {
             console.error("Erro ao inserir registro de login no histórico:", error);
           });
   
-        navigate('/App');
+        navigate('/');
       });
   };
   
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
