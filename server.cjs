@@ -72,7 +72,10 @@ app.get('/user/:id', async (req, res) => {
 
   try {
     const result = await pool.query(
-      'SELECT * FROM users WHERE id = $1',
+      `SELECT users.*, companies.name AS company_name, companies.cnpj, companies.segment 
+       FROM users 
+       LEFT JOIN companies ON users.company_id = companies.id 
+       WHERE users.id = $1`,
       [userId]
     );
 
@@ -91,13 +94,20 @@ app.get('/company/:id', async (req, res) => {
   const companyId = req.params.id;
 
   try {
-    const result = await pool.query(
+    const companyResult = await pool.query(
       'SELECT * FROM companies WHERE id = $1',
       [companyId]
     );
 
-    if (result.rows.length > 0) {
-      res.status(200).send(result.rows[0]);
+    if (companyResult.rows.length > 0) {
+      const companyDetail = companyResult.rows[0];
+      const usersResult = await pool.query(
+        'SELECT id, name, email, phone FROM users WHERE company_id = $1',
+        [companyId]
+      );
+      companyDetail.users = usersResult.rows;
+
+      res.status(200).send(companyDetail);
     } else {
       res.status(404).send({ message: 'Empresa não encontrada.' });
     }
@@ -106,6 +116,7 @@ app.get('/company/:id', async (req, res) => {
     res.status(500).send({ message: 'Erro ao buscar informações da empresa. Tente novamente mais tarde.' });
   }
 });
+
 
 app.put('/user/update/:id', async (req, res) => {
     const userId = req.params.id;
@@ -159,5 +170,25 @@ app.post('/login-history', async (req, res) => {
   } catch (error) {
     console.error('Erro ao registrar horário de login:', error);
     res.status(500).send({ message: 'Erro ao registrar horário de login. Tente novamente mais tarde.' });
+  }
+});
+
+app.get('/login-history/:userId', async (req, res) => {
+  const userId = req.params.userId;
+
+  try {
+    const result = await pool.query(
+      'SELECT login_time FROM login_history WHERE user_id = $1',
+      [userId]
+    );
+
+    if (result.rows.length > 0) {
+      res.status(200).send(result.rows);
+    } else {
+      res.status(404).send({ message: 'Histórico de login não encontrado para o usuário informado.' });
+    }
+  } catch (error) {
+    console.error('Erro ao buscar histórico de login:', error);
+    res.status(500).send({ message: 'Erro ao buscar histórico de login. Tente novamente mais tarde.' });
   }
 });

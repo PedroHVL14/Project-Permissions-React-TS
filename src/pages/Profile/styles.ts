@@ -9,9 +9,10 @@ export const StyledDivText = styled('div')({
 });
 
 export const GeralContainer = styled('div')(({ theme }: { theme: Theme }) => ({
-    marginTop: '60px',
-    backgroundColor: 'red',
-    width: 'calc(100% - 40px)',
+    marginTop: '20px',
+    backgroundColor: 'white',
+    width: 'calc(100% - 20px)',
+    marginLeft: "10px",
     overflow: 'auto',
     [theme.breakpoints.down('sm')]: {
         marginTop: '50px',

@@ -6,7 +6,7 @@ export const Settings: React.FC = () => {
     return (
         <div style={{ display: 'flex' }}>
             <Sidebar activeScreen="Settings" />
-            <Header activeScreen="Configurações" />
+            <Header activeScreen="Ajustes" />
         </div>
     );
 }
