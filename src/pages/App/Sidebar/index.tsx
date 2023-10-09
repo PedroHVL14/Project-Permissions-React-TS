@@ -36,7 +36,7 @@ export const Sidebar: React.FC = () => {
         { label: "Timeline", path: "/timeline", icon: <ChevronRightIcon /> }
       ]
     },
-    { label: "Funcionários", icon: <BadgeIcon />, path: "" },
+    { label: "Funcionários", icon: <BadgeIcon />, path: "/employees" },
     { label: "Clientes", icon: <EmojiPeopleIcon />, hasArrow: true },
     { label: "Produtos", icon: <ShoppingBasketIcon />, hasArrow: true },
     { label: "Vendas", icon: <BarChartIcon /> },

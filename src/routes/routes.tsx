@@ -6,6 +6,7 @@ import { Profile } from '../pages/Profile';
 import { ProtectedRoutes } from './ProtectedRoutes';
 import { Settings } from '../pages/Settings';
 import { Timeline } from '../pages/Timeline';
+import EmployeesPage from '../pages/employees';
 
 export const router = createBrowserRouter([
   {
@@ -22,7 +23,15 @@ export const router = createBrowserRouter([
       {
         path: '/timeline',
         element: <Timeline />
-      }
+      },
+      {
+        path: '/settings',
+        element: <Settings />
+      },
+      {
+        path: '/employees',
+        element: <EmployeesPage />
+      },
     ]
   },
   {
@@ -33,8 +42,4 @@ export const router = createBrowserRouter([
     path: '/signup',
     element: <Signup />
   },
-  {
-    path: '/settings',
-    element: <Settings />
-  }
 ]);

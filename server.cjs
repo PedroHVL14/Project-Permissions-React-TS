@@ -117,46 +117,6 @@ app.get('/company/:id', async (req, res) => {
   }
 });
 
-
-app.put('/user/update/:id', async (req, res) => {
-    const userId = req.params.id;
-    const { name, phone, password } = req.body;
-
-    try {
-        let queryString = 'UPDATE users SET updated_at = NOW()';
-        const values = [];
-
-        if (name) {
-            queryString += ', name = $2';
-            values.push(name);
-        }
-
-        if (phone) {
-            queryString += ', phone = $3';
-            values.push(phone);
-        }
-
-        if (password) {
-            queryString += ', password = $4';
-            values.push(password);
-        }
-
-        queryString += ' WHERE id = $1 RETURNING *';
-        values.unshift(userId);
-
-        const result = await pool.query(queryString, values);
-
-        if (result.rows.length > 0) {
-            res.status(200).send(result.rows[0]);
-        } else {
-            res.status(404).send({ message: 'Usuário não encontrado.' });
-        }
-    } catch (error) {
-        console.error('Erro ao atualizar informações do usuário:', error);
-        res.status(500).send({ message: 'Erro ao atualizar informações do usuário. Tente novamente mais tarde.' });
-    }
-});
-
 app.post('/login-history', async (req, res) => {
   const { user_id } = req.body;
 

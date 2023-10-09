@@ -14,6 +14,7 @@ export const GeralContainer = styled('div')(({ theme }: { theme: Theme }) => ({
     width: 'calc(100% - 20px)',
     marginLeft: "10px",
     overflow: 'auto',
+    borderRadius: '30px',
     [theme.breakpoints.down('sm')]: {
         marginTop: '50px',
         width: '100%'
