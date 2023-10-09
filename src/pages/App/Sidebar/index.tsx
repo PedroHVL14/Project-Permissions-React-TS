@@ -8,51 +8,68 @@ import ExtensionIcon from '@mui/icons-material/Extension';
 import SettingsIcon from '@mui/icons-material/Settings';
 import StoreIcon from '@mui/icons-material/Store';
 import {
-    SidebarContainer,
-    LogoImage,
-    MenuList,
-    MenuItem,
-    StyledButton,
-    StyledArrowIcon,
-    IconWrapper,} from './styles';
+  SidebarContainer,
+  LogoImage,
+  MenuList,
+  MenuItem,
+  StyledButton,
+  StyledArrowIcon,
+  IconWrapper,
+} from './styles';
 import { ThemeProvider } from '@emotion/react';
 import { theme } from '../../../components/NavButton/styles';
 import { Collapse, CssBaseline } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import BadgeIcon from '@mui/icons-material/Badge';
 
-export const Sidebar: React.FC<{ activeScreen: string }> = ({ activeScreen }) => {
+export const Sidebar: React.FC = () => {
   const navigate = useNavigate();
-  const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
+  const location = useLocation();
   const menuItems = [
     { label: "Dashboard", icon: <DashboardIcon />, path: "/" },
     {
-      label: "Usuário", icon: <AccountBoxIcon />, hasArrow: true, 
+      label: "Usuário", icon: <AccountBoxIcon />, hasArrow: true,
       subMenu: [
         { label: "Perfil", path: "/profile", icon: <ChevronRightIcon /> },
         { label: "Timeline", path: "/timeline", icon: <ChevronRightIcon /> }
       ]
     },
+    { label: "Funcionários", icon: <BadgeIcon />, path: "" },
     { label: "Clientes", icon: <EmojiPeopleIcon />, hasArrow: true },
     { label: "Produtos", icon: <ShoppingBasketIcon />, hasArrow: true },
     { label: "Vendas", icon: <BarChartIcon /> },
     { label: "Marketing", icon: <LocalGroceryStoreIcon />, hasArrow: true },
     { label: "Loja", icon: <StoreIcon />, hasArrow: true },
     { label: "Integrações", icon: <ExtensionIcon /> },
-    { label: "Ajustes", icon: <SettingsIcon /> },
+    { label: "Ajustes", icon: <SettingsIcon />, path: "/settings" },
   ];
-  const handleNavigation = (path: string) => {
-    navigate(path);
+  const getCurrentOpenSubmenu = () => {
+    for (let item of menuItems) {
+      if (item.subMenu?.some(subItem => subItem.path === location.pathname)) {
+        return item.label;
+      }
+    }
+    return null;
   };
-
+  const [openSubmenu, setOpenSubmenu] = useState<string | null>(getCurrentOpenSubmenu);
   const toggleSubmenu = (label: string) => {
     if (openSubmenu === label) {
       setOpenSubmenu(null);
     } else {
-      setOpenSubmenu(label);
+      if (!openSubmenu) {
+        setOpenSubmenu(label);
+      }
+      else if (!menuItems.find(item => item.label === openSubmenu)?.subMenu?.find(subItem => subItem.path === location.pathname)) {
+        setOpenSubmenu(label);
+      }
     }
   };
+  const handleNavigation = (path: string) => {
+    navigate(path);
+  };
+
   return (
     <SidebarContainer>
       <ThemeProvider theme={theme}>
@@ -62,10 +79,10 @@ export const Sidebar: React.FC<{ activeScreen: string }> = ({ activeScreen }) =>
           {menuItems.map(item => (
             <React.Fragment key={item.label}>
               <MenuItem>
-                <StyledButton 
-                  startIcon={<IconWrapper>{item.icon}</IconWrapper>} 
+                <StyledButton
+                  startIcon={<IconWrapper>{item.icon}</IconWrapper>}
                   endIcon={item.hasArrow ? <StyledArrowIcon /> : null}
-                  style={item.label === activeScreen ? { backgroundColor: '#EBF3E7', color: '#41b441' } : {}}
+                  style={item.path === location.pathname ? { backgroundColor: '#EBF3E7', color: '#41b441' } : {}}
                   onClick={() => {
                     if (item.subMenu) {
                       toggleSubmenu(item.label);
@@ -83,7 +100,7 @@ export const Sidebar: React.FC<{ activeScreen: string }> = ({ activeScreen }) =>
                     <MenuItem key={subItem.label}>
                       <StyledButton
                         startIcon={<IconWrapper>{subItem.icon}</IconWrapper>}
-                        style={subItem.label === activeScreen ? { backgroundColor: '#EBF3E7', color: '#41b441' } : {}}
+                        style={subItem.path === location.pathname ? { backgroundColor: '#EBF3E7', color: '#41b441' } : {}}
                         onClick={() => handleNavigation(subItem.path)}
                       >
                         {subItem.label}

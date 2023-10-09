@@ -36,12 +36,12 @@ export const Timeline: React.FC = () => {
 
     return (
         <div style={{ display: 'flex' }}>
-            <Sidebar activeScreen="profile" />
+            <Sidebar/>
             <ContentContainer>
                 <Header activeScreen="Perfil" fullWidth />
                 <GeralContainer>
                     <StyledDiv>
-                        <h2>Timeline</h2>
+                        <h2>Hora de Login</h2>
                     </StyledDiv>
                     <StyledDiv>
                         <div>
@@ -64,7 +64,7 @@ export const Timeline: React.FC = () => {
                                                     }
                                                 }}
                                             />
-                                            <Line type="monotone" dataKey="time" stroke="#8884d8" />
+                                            <Line type="monotone" dataKey="time" stroke="darkgreen" />
                                         </LineChart>
                                     </ResponsiveContainer>
                                 </ChartContainer>

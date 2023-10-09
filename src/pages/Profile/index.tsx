@@ -10,7 +10,7 @@ export const Profile: React.FC = () => {
 
     return (
         <div style={{ display: 'flex' }}>
-            <Sidebar activeScreen="profile" />
+            <Sidebar/>
             <ContentContainer>
                 <Header activeScreen="Perfil" fullWidth />
                 <GeralContainer>

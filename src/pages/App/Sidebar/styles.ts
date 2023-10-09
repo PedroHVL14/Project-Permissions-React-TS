@@ -15,7 +15,7 @@ export const SidebarContainer = styled('div')(({ theme }) => ({
 
 export const LogoImage = styled('img')({
     width: '100%',
-    marginBottom: '5px',
+    marginBottom: '-10px',
 });
 
 export const MenuList = styled('ul')({

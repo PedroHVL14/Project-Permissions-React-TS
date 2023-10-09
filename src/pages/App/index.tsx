@@ -4,7 +4,7 @@ import { Sidebar } from "./Sidebar";
 export function App() {
     return (
             <div style={{ display: 'flex' }}>
-                <Sidebar activeScreen="Dashboard" />
+                <Sidebar/>
                 <Header activeScreen="Dashboard" />
             </div>
     );
