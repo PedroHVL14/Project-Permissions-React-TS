@@ -4,7 +4,7 @@ interface AuthContextData {
     user: User | null;
     login: (user: User) => void;
     logout: () => void;
-    
+    updateCellNumber: (cellNumber: string) => void;
 }
 
 export interface User {
@@ -12,6 +12,7 @@ export interface User {
     name: string;
     email: string;
     photoURL?: string;
+    phone: string;
 }
 
 interface AuthProviderProps {
@@ -35,8 +36,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
         localStorage.removeItem('user');
     }
 
+    function updateCellNumber(cellNumber: string) {
+        if (user) {
+            const updatedUser = { ...user, cellNumber };
+            setUser(updatedUser);
+            localStorage.setItem('user', JSON.stringify(updatedUser));
+        }
+    }
+
     return (
-        <AuthContext.Provider value={{ user, login, logout }}>
+        <AuthContext.Provider value={{ user, login, logout, updateCellNumber }}>
             {children}
         </AuthContext.Provider>
     );

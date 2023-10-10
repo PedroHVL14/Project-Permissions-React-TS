@@ -13,7 +13,7 @@ import { StyledDiv } from '../Signup/styles';
 import { PasswordInput } from '../../components/PasswordInput';
 import { useAuth } from '../../validations/authContext';
 
-interface IFormInput {
+export interface IFormInput {
   email: string;
   password: string;
 }

@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import React, { useEffect } from 'react';
 import { Typography } from '@mui/material';
 import { Header } from '../App/Header';
 import { Sidebar } from '../App/Sidebar';
@@ -8,54 +7,37 @@ import { CustomTextField } from '../../components/CustomTextField';
 import { PrimaryButton } from '../../components/PrimaryButton';
 import { StyledDiv } from '../Signup/styles';
 import { api } from '../../lib/axios/axios';
+import { useAuth } from '../../validations/authContext';
+import { useForm, Controller } from 'react-hook-form';
+import { ErrorMessage } from '../../components/errorMessage';
+import { PasswordInput } from '../../components/PasswordInput';
 
 export const Settings: React.FC = () => {
-    const [name, setName] = useState('');
-    const [phone, setPhone] = useState('');
-    const [currentPassword, setCurrentPassword] = useState('');
-    const [password, setPassword] = useState('');
-    const { register, handleSubmit } = useForm();
+    const { user, login } = useAuth();
+    const { handleSubmit, control, formState: { errors }, setValue } = useForm();
 
     useEffect(() => {
-        const loggedInUserId = localStorage.getItem('loggedInUserId');
-        if (loggedInUserId) {
-            api.get(`/user/${loggedInUserId}`).then(response => {
-                const userData = response.data;
-                setName(userData.name);
-                setPhone(userData.phone);
-            });
+        if (user) {
+            console.log("User from context:", user);
+            setValue("name", user.name || "");
+            setValue("phone", user.phone || "");
         }
-    }, []);
+    }, [user, setValue]);
 
-    const handleUpdateSettings = async (data: any) => {
-        const loggedInUserId = localStorage.getItem('loggedInUserId');
-        if (loggedInUserId) {
-            try {
-                const response = await api.post('/update-user', {
-                    userId: parseInt(loggedInUserId),
-                    name: data.name,
-                    phone: data.phone,
-                    currentPassword: data.currentPassword,
-                    newPassword: data.password
-                });
-                alert(response.data.message);
-            } catch (error) {
-                console.error(error);
-    
-                if (error && typeof error === 'object' && 'response' in error) {
-                    const errorResponse = error as { response?: { status?: number, data?: { reason?: string } } };
-    
-                    if (errorResponse.response && errorResponse.response.status === 401 && errorResponse.response.data?.reason === 'wrong-password') {
-                        alert("Senha errada");
-                    } else {
-                        alert("Ocorreu um erro ao atualizar os detalhes");
-                    }
-                } else {
-                    alert("Ocorreu um erro ao atualizar os detalhes");
-                }
+    const handleUpdate = async (data: any) => {
+        try {
+            const response = await api.put(`/users/${user?.id}`, {
+                ...data,
+                currentPassword: data.password
+            });
+            if (response.status === 200) {
+                login(response.data);
+                alert('Informações atualizadas com sucesso!');
+            } else {
+                alert('Erro ao atualizar informações.');
             }
-        } else {
-            alert("Usuário não está logado");
+        } catch (error) {
+            alert('Erro ao atualizar informações.');
         }
     };
 
@@ -68,33 +50,60 @@ export const Settings: React.FC = () => {
                     <StyledDiv>
                         <Typography variant="h4">Configurações</Typography>
 
-                        <CustomTextField
-                            value={name}
-                            label="Nome"
-                            {...register("name")}
-                            onChange={(e) => setName(e.target.value)}
-                        />
-                        <CustomTextField
-                            value={phone}
-                            label="Número de Celular"
-                            {...register("phone")}
-                            onChange={(e) => setPhone(e.target.value)}
-                        />
-                        <CustomTextField
-                            value={currentPassword} 
-                            label="Senha Atual"
-                            {...register("currentPassword")}
-                            onChange={(e) => setCurrentPassword(e.target.value)}
-                        />
-                        <CustomTextField
-                            value={password} 
-                            label="Nova Senha"
-                            {...register("password")}
-                            onChange={(e) => setPassword(e.target.value)}
+                        <Controller
+                            name="name"
+                            control={control}
+                            defaultValue=""
+                            rules={{ required: "Nome é obrigatório" }}
+                            render={({ field, fieldState: { error } }) => (
+                                <>
+                                    <CustomTextField
+                                        {...field}
+                                        label="Nome"
+                                        error={!!error}
+                                    />
+                                    <ErrorMessage message={typeof errors.name?.message === 'string' ? errors.name.message : undefined} />
+                                </>
+                            )}
                         />
 
-                        <PrimaryButton
-                            onClick={handleSubmit(handleUpdateSettings)}>
+                        <Controller
+                            name="phone"
+                            control={control}
+                            defaultValue=""
+                            rules={{ required: "Número de Celular é obrigatório" }}
+                            render={({ field, fieldState: { error } }) => (
+                                <>
+                                    <CustomTextField
+                                        {...field}
+                                        label="Número de Celular"
+                                        error={!!error}
+                                    />
+                                    <ErrorMessage message={typeof errors.phone?.message === 'string' ? errors.phone.message : undefined} />
+                                </>
+                            )}
+                        />
+
+                        <Controller
+                            name="password"
+                            control={control}
+                            defaultValue=""
+                            rules={{ required: "Senha é obrigatória" }}
+                            render={() => (
+                                <>
+                                    <StyledDiv>
+                                        <PasswordInput
+                                            control={control}
+                                            name="password"
+                                            rules={{ required: "Senha é obrigatória" }}
+                                        />
+                                    </StyledDiv>
+                                    <ErrorMessage message={typeof errors.password?.message === 'string' ? errors.password.message : undefined} />
+                                </>
+                            )}
+                        />
+
+                        <PrimaryButton onClick={handleSubmit(handleUpdate)}>
                             Salvar
                         </PrimaryButton>
                     </StyledDiv>
@@ -103,4 +112,3 @@ export const Settings: React.FC = () => {
         </div>
     );
 };
-

@@ -22,22 +22,22 @@ app.post('/signup', async (req, res) => {
   const { company, user } = req.body;
 
   try {
-      const companyResult = await pool.query(
-          'INSERT INTO companies (name, cnpj, segment) VALUES ($1, $2, $3) RETURNING id',
-          [company.companyName, company.cnpj, company.segment]
-      );
+    const companyResult = await pool.query(
+      'INSERT INTO companies (name, cnpj, segment) VALUES ($1, $2, $3) RETURNING id',
+      [company.companyName, company.cnpj, company.segment]
+    );
 
-      const companyId = companyResult.rows[0].id;
-      await pool.query(
-          'INSERT INTO users (name, email, password, phone, is_manager, company_id) VALUES ($1, $2, $3, $4, TRUE, $5)',
-          [user.userName, user.email, user.password, user.phone, companyId]
-      );
+    const companyId = companyResult.rows[0].id;
+    await pool.query(
+      'INSERT INTO users (name, email, password, phone, is_manager, company_id) VALUES ($1, $2, $3, $4, TRUE, $5)',
+      [user.userName, user.email, user.password, user.phone, companyId]
+    );
 
-      res.status(201).send({ message: 'Company and user registered successfully!' });
+    res.status(201).send({ message: 'Company and user registered successfully!' });
 
   } catch (error) {
-      console.error('Error during registration:', error);
-      res.status(500).send({ message: `Error during registration: ${error.message}` });
+    console.error('Error during registration:', error);
+    res.status(500).send({ message: `Error during registration: ${error.message}` });
   }
 });
 
@@ -153,30 +153,32 @@ app.get('/login-history/:userId', async (req, res) => {
   }
 });
 
-app.post('/update-user', async (req, res) => {
-  const { userId, name, phone, currentPassword, newPassword } = req.body;
+app.put('/users/:id', async (req, res) => {
+  const userId = req.params.id;
+  const { name, phone, currentPassword } = req.body;
 
   try {
-      const userResult = await pool.query('SELECT password FROM users WHERE id = $1', [userId]);
+    const userCheck = await pool.query(
+      'SELECT * FROM users WHERE id = $1 AND password = $2',
+      [userId, currentPassword]
+    );
 
-      if (userResult.rows.length === 0) {
-          return res.status(404).send({ message: 'Usuário não encontrado.' });
-      }
-
-      const storedPassword = userResult.rows[0].password;
-
-      if (storedPassword !== currentPassword) {
-        return res.status(401).send({ message: 'Senha atual incorreta.', reason: 'wrong-password' });
+    if (userCheck.rows.length === 0) {
+      return res.status(401).send({ message: 'Senha atual incorreta.' });
     }
-    
-      await pool.query(
-          'UPDATE users SET name = $1, phone = $2, password = $3 WHERE id = $4',
-          [name, phone, newPassword, userId]
-      );
+    const userResult = await pool.query(
+      'UPDATE users SET name = $1, phone = $2 WHERE id = $3 RETURNING *',
+      [name, phone, userId]
+    );
 
-      res.status(200).send({ message: 'Detalhes do usuário atualizados com sucesso!' });
+    if (userResult.rows.length > 0) {
+      res.status(200).send(userResult.rows[0]);
+    } else {
+      res.status(404).send({ message: 'Usuário não encontrado.' });
+    }
   } catch (error) {
-      console.error('Erro ao atualizar detalhes do usuário:', error);
-      res.status(500).send({ message: 'Erro ao atualizar detalhes do usuário. Tente novamente mais tarde.' });
+    console.error('Erro ao atualizar informações do usuário:', error);
+    res.status(500).send({ message: 'Erro ao atualizar informações do usuário. Tente novamente mais tarde.' });
   }
 });
+

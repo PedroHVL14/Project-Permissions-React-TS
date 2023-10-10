@@ -45,7 +45,7 @@ export const Timeline: React.FC = () => {
                 <Header activeScreen="Perfil" fullWidth />
                 <GeralContainer>
                     <StyledDiv>
-                        <h2>Hora de Login</h2>
+                        <h2>Histórico de acessos</h2>
                     </StyledDiv>
                     <StyledDiv>
                         <div>

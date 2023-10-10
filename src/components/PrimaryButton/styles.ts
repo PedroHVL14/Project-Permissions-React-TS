@@ -4,6 +4,7 @@ export const StyledPrimaryButton = styled(Button)(() => ({
   width: '150px',
   height: '40px',
   marginTop: "15px",
+  marginBottom: "20px",
   backgroundColor: '#41b441',
   color: '#ffffff',
   '&:hover': {

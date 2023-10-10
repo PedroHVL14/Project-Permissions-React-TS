@@ -1,21 +1,16 @@
 import React, { useState, MouseEvent } from 'react';
-import { Controller, Control } from 'react-hook-form';
+import { Controller, Control, FieldValues } from 'react-hook-form';
 import { FormControl, InputAdornment, IconButton } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { StyledTextField } from '../CustomTextField/styles';
 
-interface IFormInput {
-    email: string;
-    password: string;
-}
-
-interface PasswordInputProps {
-    control: Control<IFormInput>;
-    name: "email" | "password";
+interface PasswordInputProps<T extends FieldValues> {
+    control: Control<T>;
+    name: keyof T;
     rules?: Record<string, any>;
 }
 
-export const PasswordInput: React.FC<PasswordInputProps> = ({ control, name, rules }) => {
+export const PasswordInput: React.FC<PasswordInputProps<any>> = ({ control, name, rules }) => {
     const [showPassword, setShowPassword] = useState(false);
 
     const handleClickShowPassword = () => {
@@ -28,7 +23,7 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({ control, name, rul
 
     return (
         <Controller
-            name={name}
+            name={name as string}
             control={control}
             rules={rules}
             render={({ field, fieldState: { error } }) => (
