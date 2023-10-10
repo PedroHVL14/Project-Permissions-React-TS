@@ -2,24 +2,27 @@ import React from 'react';
 import { useAuth } from '../../validations/authContext';
 import { Header } from '../App/Header';
 import { Sidebar } from '../App/Sidebar';
-import { ContentContainer, GeralContainer } from './styles';
+import { CenteredText, ContentContainer, GeralContainer, NewStyledDiv } from './styles';
 import { StyledDiv } from '../Signup/styles';
+import { Avatar } from '@mui/material';
 
 export const Profile: React.FC = () => {
-    const{user} = useAuth();
+    const { user } = useAuth();
 
     return (
         <div style={{ display: 'flex' }}>
-            <Sidebar/>
+            <Sidebar />
             <ContentContainer>
                 <Header activeScreen="Perfil" fullWidth />
                 <GeralContainer>
                     <StyledDiv>
-                        <div>
-                    <h2>Dados do Usuário:</h2>
-                        <p><strong>Nome:</strong> {user?.name}</p>
-                        <p><strong>Email:</strong> {user?.email}</p>
-                        </div>
+                        <NewStyledDiv>
+                            <Avatar alt="TempAvatar" src="" sx={{ width: 200, height: 200 }} />
+                        </NewStyledDiv>
+                        <CenteredText>{user?.name}</CenteredText>
+                        <CenteredText>{user?.email}</CenteredText>
+                        <CenteredText>{user?.phone}</CenteredText>
+                        <CenteredText>Gerente: {user?.is_manager ? "Sim" : "Não"}</CenteredText>
                     </StyledDiv>
                 </GeralContainer>
             </ContentContainer>

@@ -13,6 +13,8 @@ export interface User {
     email: string;
     photoURL?: string;
     phone: string;
+    company_id: number;
+    is_manager: boolean
 }
 
 interface AuthProviderProps {

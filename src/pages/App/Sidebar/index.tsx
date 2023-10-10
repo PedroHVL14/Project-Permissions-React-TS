@@ -23,6 +23,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import BadgeIcon from '@mui/icons-material/Badge';
+import GroupsIcon from '@mui/icons-material/Groups';
 
 export const Sidebar: React.FC = () => {
   const navigate = useNavigate();
@@ -33,10 +34,11 @@ export const Sidebar: React.FC = () => {
       label: "Usuário", icon: <AccountBoxIcon />, hasArrow: true,
       subMenu: [
         { label: "Perfil", path: "/profile", icon: <ChevronRightIcon /> },
-        { label: "Timeline", path: "/timeline", icon: <ChevronRightIcon /> }
+        { label: "TimeLine", path: "/timeline", icon: <ChevronRightIcon /> }
       ]
     },
     { label: "Funcionários", icon: <BadgeIcon />, path: "/employees" },
+    { label: "Grupos", icon: <GroupsIcon />, path: "/groups" },
     { label: "Clientes", icon: <EmojiPeopleIcon />, hasArrow: true },
     { label: "Produtos", icon: <ShoppingBasketIcon />, hasArrow: true },
     { label: "Vendas", icon: <BarChartIcon /> },

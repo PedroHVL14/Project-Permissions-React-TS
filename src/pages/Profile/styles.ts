@@ -27,3 +27,12 @@ export const ContentContainer = styled('div')(() => ({
     display: 'flex',
     flexDirection: 'column',
 }));
+
+export const NewStyledDiv = styled('div')(() => ({
+    alignItems: "center",
+    marginBottom: "20px"
+}));
+
+export const CenteredText = styled('p')(() => ({
+    textAlign: 'center',
+}));

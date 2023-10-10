@@ -42,7 +42,7 @@ export const Timeline: React.FC = () => {
         <div style={{ display: 'flex' }}>
             <Sidebar />
             <ContentContainer>
-                <Header activeScreen="Perfil" fullWidth />
+                <Header activeScreen="TimeLine" fullWidth />
                 <GeralContainer>
                     <StyledDiv>
                         <h2>Histórico de acessos</h2>

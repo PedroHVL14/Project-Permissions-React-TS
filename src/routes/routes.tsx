@@ -7,6 +7,7 @@ import { ProtectedRoutes } from './ProtectedRoutes';
 import { Settings } from '../pages/Settings';
 import { Timeline } from '../pages/Timeline';
 import EmployeesPage from '../pages/employees';
+import { Groups } from '../pages/groups';
 
 export const router = createBrowserRouter([
   {
@@ -31,6 +32,10 @@ export const router = createBrowserRouter([
       {
         path: '/employees',
         element: <EmployeesPage />
+      },
+      {
+        path: '/groups',
+        element: <Groups />
       },
     ]
   },
