@@ -3,8 +3,8 @@ import { Sidebar } from "../App/Sidebar";
 import { ContentContainer, GeralContainer } from "../Profile/styles";
 import { Header } from "../App/Header";
 import { StyledDiv } from "../Signup/styles";
-import { PrimaryButton } from "../../components/PrimaryButton";
 import { useForm } from "react-hook-form";
+import { PrimaryButtonStyled } from "./styles";
 
 export default function EmployeesPage() {
     const {handleSubmit} = useForm<{
@@ -25,10 +25,10 @@ export default function EmployeesPage() {
                     <StyledDiv>
                         <h2>Funcionários</h2>
                         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-                        <PrimaryButton
+                        <PrimaryButtonStyled
                             onClick={handleSubmit(handleUpdateSettings)}>
-                            Salvar
-                        </PrimaryButton>
+                            Novo Funcionário
+                        </PrimaryButtonStyled>
                         </Stack>
                     </StyledDiv>
                 </GeralContainer>

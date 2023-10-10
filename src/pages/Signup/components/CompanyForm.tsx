@@ -54,7 +54,7 @@ export function CompanyForm({
                     <Controller
                         control={control}
                         name='company.cnpj'
-                        rules={{ required: "CNPJ é obrigatório", validate: (value) => value.length <= 3 ? "Erro" : true }}
+                        rules={{ required: "CNPJ é obrigatório", validate: (value) => value.length <= 3 ? "CNPJ invalido" : true }}
                         render={({ field: { onChange, value }, fieldState: { error } }) => (
                             <>
                                 <CustomTextField

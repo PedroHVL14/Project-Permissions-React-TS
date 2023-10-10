@@ -4,7 +4,7 @@ interface PrimaryButtonProps {
     onClick: () => void;
     children: React.ReactNode;
     type?: "submit" | "button" | "reset";
-    disabled?: boolean; 
+    disabled?: boolean;
 }
 
 export function PrimaryButton({ onClick, children, disabled }: PrimaryButtonProps) {

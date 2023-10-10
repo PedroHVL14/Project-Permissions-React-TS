@@ -7,8 +7,13 @@ import { StyledDiv } from '../Signup/styles';
 import { api } from '../../lib/axios/axios';
 import { ChartContainer, StyledCard } from './styles';
 
+type TimelineProps = {
+    login_time: string;
+    count: number;
+}
+
 export const Timeline: React.FC = () => {
-    const [loginData, setLoginData] = useState<any[]>([]);
+    const [loginData, setLoginData] = useState<TimelineProps[]>([]);
 
     useEffect(() => {
         const userId = localStorage.getItem('loggedInUserId');
@@ -18,12 +23,11 @@ export const Timeline: React.FC = () => {
         }
         api.get(`/login-history/${userId}`)
             .then(response => {
-                const organizedData = response.data.map((item: any) => {
+                const organizedData = response.data.map((item: TimelineProps) => {
                     const date = new Date(item.login_time);
-                    const numericTime = date.getHours() + date.getMinutes() / 60;
                     return {
-                        date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
-                        time: numericTime
+                        date: Intl.DateTimeFormat('pt-br', { dateStyle: 'short' }).format(date),
+                        count: item.count
                     };
                 });
 
@@ -36,7 +40,7 @@ export const Timeline: React.FC = () => {
 
     return (
         <div style={{ display: 'flex' }}>
-            <Sidebar/>
+            <Sidebar />
             <ContentContainer>
                 <Header activeScreen="Perfil" fullWidth />
                 <GeralContainer>
@@ -51,7 +55,7 @@ export const Timeline: React.FC = () => {
                                         <LineChart data={loginData}>
                                             <CartesianGrid strokeDasharray="3 3" />
                                             <XAxis dataKey="date" />
-                                            <YAxis domain={[0, 24]} />
+                                            <YAxis />
                                             <Tooltip
                                                 formatter={(value, name) => {
                                                     if (typeof value === "number") {
@@ -64,7 +68,7 @@ export const Timeline: React.FC = () => {
                                                     }
                                                 }}
                                             />
-                                            <Line type="monotone" dataKey="time" stroke="darkgreen" />
+                                            <Line type="monotone" dataKey="count" stroke="darkgreen" />
                                         </LineChart>
                                     </ResponsiveContainer>
                                 </ChartContainer>

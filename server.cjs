@@ -138,7 +138,7 @@ app.get('/login-history/:userId', async (req, res) => {
 
   try {
     const result = await pool.query(
-      'SELECT login_time FROM login_history WHERE user_id = $1',
+      'SELECT login_time::date, count(*) FROM login_history e WHERE user_id = $1 GROUP BY login_time::date order by login_time::date',
       [userId]
     );
 
@@ -150,5 +150,33 @@ app.get('/login-history/:userId', async (req, res) => {
   } catch (error) {
     console.error('Erro ao buscar histórico de login:', error);
     res.status(500).send({ message: 'Erro ao buscar histórico de login. Tente novamente mais tarde.' });
+  }
+});
+
+app.post('/update-user', async (req, res) => {
+  const { userId, name, phone, currentPassword, newPassword } = req.body;
+
+  try {
+      const userResult = await pool.query('SELECT password FROM users WHERE id = $1', [userId]);
+
+      if (userResult.rows.length === 0) {
+          return res.status(404).send({ message: 'Usuário não encontrado.' });
+      }
+
+      const storedPassword = userResult.rows[0].password;
+
+      if (storedPassword !== currentPassword) {
+        return res.status(401).send({ message: 'Senha atual incorreta.', reason: 'wrong-password' });
+    }
+    
+      await pool.query(
+          'UPDATE users SET name = $1, phone = $2, password = $3 WHERE id = $4',
+          [name, phone, newPassword, userId]
+      );
+
+      res.status(200).send({ message: 'Detalhes do usuário atualizados com sucesso!' });
+  } catch (error) {
+      console.error('Erro ao atualizar detalhes do usuário:', error);
+      res.status(500).send({ message: 'Erro ao atualizar detalhes do usuário. Tente novamente mais tarde.' });
   }
 });
