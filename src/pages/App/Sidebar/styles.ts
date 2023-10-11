@@ -4,7 +4,8 @@ import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArro
 export const SidebarContainer = styled('div')(({ theme }) => ({
     backgroundColor: 'white',
     width: '280px',
-    height: '120vh',
+    height: 'end',
+    minHeight: '1100px',
     padding: '20px',
     margin: 0,
     borderRight: '1px solid #e0e0e0',
