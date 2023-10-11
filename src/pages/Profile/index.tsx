@@ -17,7 +17,7 @@ export const Profile: React.FC = () => {
                 <GeralContainer>
                     <StyledDiv>
                         <NewStyledDiv>
-                            <Avatar alt="TempAvatar" src="" sx={{ width: 200, height: 200 }} />
+                            <Avatar alt="TempAvatar" src={user?.photo} sx={{ width: 200, height: 200 }} />
                         </NewStyledDiv>
                         <CenteredText>{user?.name}</CenteredText>
                         <CenteredText>{user?.email}</CenteredText>

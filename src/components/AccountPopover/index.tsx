@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Box, Divider, Typography, Stack, MenuItem, Avatar, Popover } from '@mui/material';
 import { PopoverPaperProps, StyledAvatarButton } from './styles';
-import { User } from '../../validations/authContext';
+import { User, useAuth } from '../../validations/authContext';
 import PersonIcon from '@mui/icons-material/Person';
 import HomeIcon from '@mui/icons-material/Home';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -32,6 +32,7 @@ const MENU_OPTIONS = [
 
 export default function AccountPopover({ userInfo, onLogout }: AccountPopoverProps) {
     const navigate = useNavigate();
+    const { user } = useAuth();
     const [open, setOpen] = useState<null | EventTarget & HTMLElement>(null);
 
     const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -48,7 +49,7 @@ export default function AccountPopover({ userInfo, onLogout }: AccountPopoverPro
     return (
         <>
             <StyledAvatarButton onClick={handleOpen}>
-                {userInfo && <Avatar src={userInfo.photoURL} alt="photoURL" />}
+                {userInfo && <Avatar src={user?.photo} alt="photoURL" />}
             </StyledAvatarButton>
 
             <Popover

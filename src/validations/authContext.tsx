@@ -11,7 +11,7 @@ export interface User {
     id: number;
     name: string;
     email: string;
-    photoURL?: string;
+    photo?: string;
     phone: string;
     company_id: number;
     is_manager: boolean

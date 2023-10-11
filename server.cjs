@@ -155,7 +155,7 @@ app.get('/login-history/:userId', async (req, res) => {
 
 app.put('/users/:id', async (req, res) => {
   const userId = req.params.id;
-  const { name, phone, currentPassword } = req.body;
+  const { name, phone, currentPassword, photo } = req.body;
 
   try {
     const userCheck = await pool.query(
@@ -166,9 +166,10 @@ app.put('/users/:id', async (req, res) => {
     if (userCheck.rows.length === 0) {
       return res.status(401).send({ message: 'Senha atual incorreta.' });
     }
+    
     const userResult = await pool.query(
-      'UPDATE users SET name = $1, phone = $2 WHERE id = $3 RETURNING *',
-      [name, phone, userId]
+      'UPDATE users SET name = $1, phone = $2, photo = $3 WHERE id = $4 RETURNING *',
+      [name, phone, photo, userId]
     );
 
     if (userResult.rows.length > 0) {
