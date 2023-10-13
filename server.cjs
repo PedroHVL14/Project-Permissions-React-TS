@@ -199,10 +199,46 @@ app.post('/groups', async (req, res) => {
       [userId, groupId]
     );
 
-    res.status(201).send({ message: 'Grupo criado com sucesso!' });
+    res.status(201).send({});
   } catch (error) {
     console.error('Erro ao criar grupo:', error);
     res.status(500).send({ message: `Erro ao criar grupo: ${error.message}` });
   }
 });
 
+app.get('/user-groups/:userId', async (req, res) => {
+  const userId = req.params.userId;
+
+  try {
+      const result = await pool.query(
+          `SELECT groups.* 
+           FROM groups 
+           JOIN groups_manager ON groups.id = groups_manager.group_id 
+           WHERE groups_manager.user_id = $1`,
+          [userId]
+      );
+
+      if (result.rows.length > 0) {
+          res.status(200).send(result.rows);
+      } else {
+          res.status(404).send({ message: 'Nenhum grupo encontrado para o usuário informado.' });
+      }
+  } catch (error) {
+      console.error('Erro ao buscar grupos do usuário:', error);
+      res.status(500).send({ message: 'Erro ao buscar grupos. Tente novamente mais tarde.' });
+  }
+});
+
+app.delete('/groups/:groupId', async (req, res) => {
+  const groupId = req.params.groupId;
+
+  try {
+      await pool.query('DELETE FROM groups_manager WHERE group_id = $1', [groupId]);
+
+      await pool.query('DELETE FROM groups WHERE id = $1', [groupId]);
+      res.status(200).send({});
+  } catch (error) {
+      console.error('Erro ao excluir grupo:', error);
+      res.status(500).send({ message: `Erro ao excluir grupo: ${error.message}` });
+  }
+});

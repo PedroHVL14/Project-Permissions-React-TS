@@ -17,5 +17,5 @@ export const NewStyledDiv = styled('div')(() => ({
 
 export const CenteredH2 = styled('h2')(() => ({
   margin: '0 auto 0 0',
-  marginLeft: "35px"
+  marginLeft: "40px"
 }));
