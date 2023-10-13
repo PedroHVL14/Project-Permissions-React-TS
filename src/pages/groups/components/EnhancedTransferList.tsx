@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     List, ListItem, ListItemText, Checkbox, Typography
 } from '@mui/material';
 import { CustomList, ListContainer, ListTitle, MoveButton, TransferGrid } from '../styles';
 
+interface EnhancedTransferListProps {
+    onPermissionsChange: (permissions: string[]) => void;
+}
+
 const data = [
     'Dashboard', 'Clientes', 'Produtos', 'Vendas', 'Marketing', 'Loja', 'Integrações', 'Ajustes'
 ];
 
-export const EnhancedTransferList: React.FC = () => {
+export const EnhancedTransferList: React.FC<EnhancedTransferListProps> = ({ onPermissionsChange }) => {
     const [checked, setChecked] = useState<string[]>([]);
     const [left, setLeft] = useState(data);
     const [right, setRight] = useState<string[]>([]);
@@ -73,6 +77,10 @@ export const EnhancedTransferList: React.FC = () => {
             </CustomList>
         </ListContainer>
     );
+
+    useEffect(() => {
+        onPermissionsChange(right);
+    }, [right]);
 
     return (
         <TransferGrid container spacing={2}>

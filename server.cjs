@@ -166,7 +166,7 @@ app.put('/users/:id', async (req, res) => {
     if (userCheck.rows.length === 0) {
       return res.status(401).send({ message: 'Senha atual incorreta.' });
     }
-    
+
     const userResult = await pool.query(
       'UPDATE users SET name = $1, phone = $2, photo = $3 WHERE id = $4 RETURNING *',
       [name, phone, photo, userId]
@@ -180,6 +180,29 @@ app.put('/users/:id', async (req, res) => {
   } catch (error) {
     console.error('Erro ao atualizar informações do usuário:', error);
     res.status(500).send({ message: 'Erro ao atualizar informações do usuário. Tente novamente mais tarde.' });
+  }
+});
+
+app.post('/groups', async (req, res) => {
+  const { permissions, userId } = req.body;
+
+  try {
+    const groupResult = await pool.query(
+      `INSERT INTO groups (DashboardPermission, ClientesPermission, ProdutosPermission, VendasPermission, MarketingPermission, LojaPermission, IntegraçõesPermission, name, description) 
+           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id`,
+      [permissions.DashboardPermission, permissions.ClientesPermission, permissions.ProdutosPermission, permissions.VendasPermission, permissions.MarketingPermission, permissions.LojaPermission, permissions.IntegraçõesPermission, permissions.name, permissions.description]
+    );
+
+    const groupId = groupResult.rows[0].id;
+    await pool.query(
+      'INSERT INTO groups_manager (user_id, group_id) VALUES ($1, $2)',
+      [userId, groupId]
+    );
+
+    res.status(201).send({ message: 'Grupo criado com sucesso!' });
+  } catch (error) {
+    console.error('Erro ao criar grupo:', error);
+    res.status(500).send({ message: `Erro ao criar grupo: ${error.message}` });
   }
 });
 
