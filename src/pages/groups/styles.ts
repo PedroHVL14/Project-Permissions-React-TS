@@ -9,8 +9,8 @@ export const Overlay = styled("div")(() => ({
     bottom: 0,
     backgroundColor: "rgba(0, 0, 0, 0.7)",
     display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: "center", 
+    alignItems: "center", 
     zIndex: 1000
 }));
 
@@ -20,7 +20,8 @@ export const ModalContainer = styled(Paper)(() => ({
     width: "100%",
     zIndex: 1001,
     position: "relative",
-    borderRadius: "30px"
+    borderRadius: "30px",
+    boxShadow: "0px 0px 15px rgba(0, 0, 0, 0.2)" 
 }));
 
 export const CustomList = styled(Paper)(() => ({

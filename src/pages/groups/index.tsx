@@ -119,7 +119,7 @@ export const Groups: React.FC = () => {
             for (const groupId of selectedRows) {
                 await api.delete(`/groups/${groupId}`);
             }
-            alert('Selected groups deleted successfully!');
+            enqueueSnackbar('Selected groups deleted successfully!', { variant: 'success', autoHideDuration: 10000 });
             window.location.reload();
             const updatedGroups = userGroups.filter(group => !selectedRows.includes(group.id.toString()));
             setUserGroups(updatedGroups);
@@ -169,7 +169,7 @@ export const Groups: React.FC = () => {
             ),
         },
     ];
-
+    
     return (
         <div style={{ display: 'flex' }}>
             <Sidebar />

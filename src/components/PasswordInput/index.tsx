@@ -27,7 +27,7 @@ export const PasswordInput: React.FC<PasswordInputProps<any>> = ({ control, name
             control={control}
             rules={rules}
             render={({ field, fieldState: { error } }) => (
-                <FormControl variant="outlined" fullWidth>
+                <FormControl variant="outlined">
                     <StyledTextField
                         {...field}
                         id="outlined-adornment-password"

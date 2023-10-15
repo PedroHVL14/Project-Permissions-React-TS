@@ -8,23 +8,23 @@ export const StyledOutlinedInput = styled(TextField)(() => ({
   justifyContent: 'center',
   
   '& label': {
-    color: 'green', // Cor padrão do rótulo
+    color: 'green',
   },
   '& label.Mui-focused': {
-    color: 'green', // Cor do rótulo quando focado
+    color: 'green',
   },
   '& .MuiOutlinedInput-root': {
     '& fieldset': {
-      borderColor: 'green', // Cor da borda em estado normal
+      borderColor: 'green',
     },
     '&:hover fieldset': {
-      borderColor: 'darkgreen', // Cor da borda ao passar o mouse
+      borderColor: 'darkgreen',
     },
     '&.Mui-focused fieldset': {
-      borderColor: 'limegreen', // Cor da borda quando focado
+      borderColor: 'limegreen',
     },
   },
   '& .MuiInputBase-input': {
-    color: 'green', // Cor do texto do input
+    color: 'green',
   }
 }));
