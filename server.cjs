@@ -242,3 +242,30 @@ app.delete('/groups/:groupId', async (req, res) => {
       res.status(500).send({ message: `Erro ao excluir grupo: ${error.message}` });
   }
 });
+
+app.put('/groups/:groupId', async (req, res) => {
+  const groupId = req.params.groupId;
+  const { permissions } = req.body;
+
+  try {
+      await pool.query(
+          `UPDATE groups SET 
+           DashboardPermission = $1,
+           ClientesPermission = $2,
+           ProdutosPermission = $3,
+           VendasPermission = $4,
+           MarketingPermission = $5,
+           LojaPermission = $6,
+           IntegraçõesPermission = $7,
+           name = $8,
+           description = $9 
+           WHERE id = $10`,
+          [permissions.DashboardPermission, permissions.ClientesPermission, permissions.ProdutosPermission, permissions.VendasPermission, permissions.MarketingPermission, permissions.LojaPermission, permissions.IntegraçõesPermission, permissions.name, permissions.description, groupId]
+      );
+
+      res.status(200).send({ message: "Group updated successfully!" });
+  } catch (error) {
+      console.error('Error updating group:', error);
+      res.status(500).send({ message: `Error updating group: ${error.message}` });
+  }
+});
