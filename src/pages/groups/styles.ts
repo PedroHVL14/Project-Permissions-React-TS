@@ -11,17 +11,21 @@ export const Overlay = styled("div")(() => ({
     display: "flex",
     justifyContent: "center", 
     alignItems: "center", 
-    zIndex: 1000
+    zIndex: 1000,
+    overflowY: 'auto',
+    padding: '2%'
 }));
 
 export const ModalContainer = styled(Paper)(() => ({
     padding: "20px",
-    maxWidth: "550px",
+    maxWidth: "600px",
     width: "100%",
+    maxHeight: '105%',
+    overflowY: 'auto',
     zIndex: 1001,
     position: "relative",
-    borderRadius: "30px",
-    boxShadow: "0px 0px 15px rgba(0, 0, 0, 0.2)" 
+    borderRadius: "40px",
+    boxShadow: "0px 0px 15px rgba(0, 0, 0, 0.2)",
 }));
 
 export const CustomList = styled(Paper)(() => ({

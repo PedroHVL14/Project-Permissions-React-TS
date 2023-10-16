@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
 import { Control, Controller } from 'react-hook-form';
 import { CustomTextField } from "../../../components/CustomTextField";
+import { PasswordInput } from "../../../components/PasswordInput"; // You might need to adjust the import path for PasswordInput
 import { PrimaryButton } from "../../../components/PrimaryButton";
 import { isValidEmail } from "../../../validations/isValidEmail";
 import { StyledDiv } from "../styles";
@@ -68,13 +69,12 @@ export function UserForm({
                         control={control}
                         name='user.password'
                         rules={{ required: "Senha é obrigatória" }}
-                        render={({ field: { onChange, value }, fieldState: { error } }) => (
+                        render={({ fieldState: { error } }) => (
                             <>
-                                <CustomTextField
-                                    label="Senha"
-                                    error={!!error?.message}
-                                    onChange={onChange}
-                                    value={value} />
+                                <PasswordInput
+                                    control={control}
+                                    name='user.password'
+                                    rules={{ required: "Senha é obrigatória" }} />
                                 <ErrorMessage message={error?.message} />
                             </>
                         )}
