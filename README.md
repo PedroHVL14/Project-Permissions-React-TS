@@ -20,4 +20,4 @@
 <h2>Uso</h2>
 <p>Após a instalação, acesse <code>http://localhost:[PORTA]</code> para visualizar a aplicação.</p>
 <h2>Suporte</h2>
-<p>Para suporte, entre em contato conosco em [pedro.vitorino.lima@gmail.com].</p>
+<p>Para suporte, entre em contato comigo em pedro.vitorino.lima@gmail.com.</p>
